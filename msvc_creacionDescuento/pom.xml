@@ -11,7 +11,7 @@
 	</parent>
 
 
-	<artifactId></artifactId>
+	<artifactId>msvc_creacionDescuento</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
 	<name>mscv_creacionDescuento</name>
 	<description>Microservicio de creacion de descuentos</description>
