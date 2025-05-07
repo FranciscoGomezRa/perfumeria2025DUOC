@@ -18,6 +18,7 @@
 	<name>Perfumelandia MicroServicios</name>
 
 	<modules>
+		<module>msvc_creacionDescuento</module>
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
 		<!-- Añade otros módulos aquí -->
