@@ -20,6 +20,7 @@
 	<modules>
 		<module>MSVC-Productos</module>
 		<module>MSVC-Sucursal</module>
+		<module>MSVC-Creacion_Descuento</module>
 		<!-- Añade otros módulos aquí -->
 	</modules>
 
