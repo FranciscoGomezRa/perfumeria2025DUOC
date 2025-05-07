@@ -21,7 +21,9 @@
 		<module>msvc_creacionDescuento</module>
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
+		<module>msvc_boleta</module>
 		<!-- Añade otros módulos aquí -->
+
 	</modules>
 
 	<properties>
