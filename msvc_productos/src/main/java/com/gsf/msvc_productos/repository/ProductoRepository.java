@@ -1,6 +1,6 @@
-package com.gsf.MSVC_Productos.repository;
+package com.gsf.msvc_productos.repository;
 
-import com.gsf.MSVC_Productos.models.Producto;
+import com.gsf.msvc_productos.models.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {

@@ -1,7 +1,7 @@
-package com.gsf.MSVC_Productos.service;
+package com.gsf.msvc_productos.service;
 
-import com.gsf.MSVC_Productos.models.Producto;
-import com.gsf.MSVC_Productos.repository.ProductoRepository;
+import com.gsf.msvc_productos.models.Producto;
+import com.gsf.msvc_productos.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
