@@ -13,7 +13,7 @@
 
 	<artifactId>msvc_productos</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
-	<name>MSVC-Productos</name>
+	<name>msvc_productos</name>
 	<description>MicroServicios de Productos</description>
 
 	<properties>
