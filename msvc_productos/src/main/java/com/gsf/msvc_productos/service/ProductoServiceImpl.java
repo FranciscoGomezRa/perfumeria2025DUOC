@@ -26,10 +26,19 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto save(Producto producto) {
-        if(this.productoRepository.findByNombre(producto.getNombreProducto()).isPresent()){
+        if(productoRepository.findByNombreProducto(producto.getNombreProducto()).isPresent()){
             throw new ProductoException("El producto"+producto.getNombreProducto()+ "ya existe");
         }
         return this.productoRepository.save(producto) ;
+    }
+
+    @Override
+    public void deleteById(Long id){
+        if(this.productoRepository.findById(id).isPresent()){
+            this.productoRepository.deleteById(id);
+        }else{
+            throw new ProductoException("No se muestra el producto con:" +id);
+        }
     }
 
 }
