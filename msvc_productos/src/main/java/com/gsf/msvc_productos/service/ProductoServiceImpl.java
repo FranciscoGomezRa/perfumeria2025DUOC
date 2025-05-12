@@ -1,11 +1,13 @@
 package com.gsf.msvc_productos.service;
 
+import com.gsf.msvc_productos.exceptions.ProductoException;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ProductoServiceImpl implements ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
@@ -15,12 +17,19 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto findById(Long id) {
-        return null;
+
+        return this.productoRepository.findById(id).orElseThrow(
+                () -> new ProductoException("El producto con id" + id + "no se encuentra registrado")
+
+        );
     }
 
     @Override
     public Producto save(Producto producto) {
-        return null;
+        if(this.productoRepository.findByNombre(producto.getNombreProducto()).isPresent()){
+            throw new ProductoException("El producto"+producto.getNombreProducto()+ "ya existe");
+        }
+        return this.productoRepository.save(producto) ;
     }
 
 }
