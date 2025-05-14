@@ -22,6 +22,7 @@
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
 		<module>msvc_boleta</module>
+		<module>msvc_inventario</module>
 		<!-- Añade otros módulos aquí -->
 
 	</modules>
