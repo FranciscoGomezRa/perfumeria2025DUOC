@@ -2,6 +2,7 @@ package com.gsf.msvc_productos.controller;
 
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.service.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,13 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<>
+    public ResponseEntity<Producto> save(@Valid @RequestBody Producto producto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.productService.save(producto));
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<Producto>> deleteById(@PathVariable Long id){
+        productService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
