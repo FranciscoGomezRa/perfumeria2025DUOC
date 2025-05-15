@@ -24,6 +24,11 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findAll());
     }
 
+    @GetMapping("/name/{nombre_producto}")
+    public ResponseEntity<Producto> findByNombreProducto(@PathVariable String nombre_producto){
+        return ResponseEntity.status(HttpStatus.OK).body(this.productService.findByNombreProducto(nombre_producto).orElse(null));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Producto> findById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findById(id));

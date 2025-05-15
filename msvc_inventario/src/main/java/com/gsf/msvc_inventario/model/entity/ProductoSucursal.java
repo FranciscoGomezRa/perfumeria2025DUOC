@@ -1,4 +1,4 @@
-package com.gsf.msvc_inventario.model;
+package com.gsf.msvc_inventario.model.entity;
 
 
 import jakarta.persistence.*;
@@ -20,6 +20,10 @@ public class ProductoSucursal {
     @Column(name="cantidad_Producto")
     @NotNull(message="Debe Ingresar una Cantidad")
     private Integer cantidadProducto;
+
+    @Column(name="nombre_producto")
+    @NotNull(message="Debe Ingresar un nombre de Producto")
+    private String nombreProductoSucursal;
 
 
 

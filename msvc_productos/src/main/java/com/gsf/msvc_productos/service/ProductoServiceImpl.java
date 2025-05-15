@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProductoServiceImpl implements ProductoService {
     @Autowired
@@ -39,6 +41,10 @@ public class ProductoServiceImpl implements ProductoService {
         }else{
             throw new ProductoException("No se muestra el producto con:" +id);
         }
+    }
+    @Override
+    public Optional<Producto> findByNombreProducto(String nombre_producto){
+        return this.productoRepository.findByNombreProducto(nombre_producto);
     }
 
 }
