@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gsf</groupId>
-	<artifactId>msvc.boleta</artifactId>
+	<artifactId>msvc_boleta</artifactId>
 	<!--version>0.0.1-SNAPSHOT</-version-->
-	<name>msvc.boleta</name>
+	<name>msvc_boleta</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
