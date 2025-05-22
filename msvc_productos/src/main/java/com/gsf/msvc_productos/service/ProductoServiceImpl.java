@@ -31,6 +31,7 @@ public class ProductoServiceImpl implements ProductoService {
         if(productoRepository.findByNombreProducto(producto.getNombreProducto()).isPresent()){
             throw new ProductoException("El producto"+producto.getNombreProducto()+ "ya existe");
         }
+        producto.setNombreProducto(producto.getNombreProducto());
         return this.productoRepository.save(producto) ;
     }
 
