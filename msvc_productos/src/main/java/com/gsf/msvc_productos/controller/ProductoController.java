@@ -24,7 +24,7 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findAll());
     }
 
-    @GetMapping("/name/{nombre_producto}")
+    @GetMapping("nombre/{nombre_producto}")
     public ResponseEntity<Producto> findByNombreProducto(@PathVariable String nombre_producto){
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findByNombreProducto(nombre_producto).orElse(null));
     }
