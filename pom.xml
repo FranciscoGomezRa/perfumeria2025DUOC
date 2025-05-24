@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
+		<version>3.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -23,7 +23,6 @@
 		<module>msvc_creacionDescuento</module> <!-- Puerto 8084 -->
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
-		<module>msvc.boleta</module> <!-- Puerto 8085 -->
 		<module>msvc_inventario</module>
 		<!-- Añade otros módulos aquí -->
 

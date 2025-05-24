@@ -9,13 +9,10 @@
 		<artifactId>perfumelandia</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-
 	<artifactId>msvc_productos</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
 	<name>msvc_productos</name>
 	<description>MicroServicios de Productos</description>
-
 	<properties>
 		<java.version>21</java.version>
 		<spring-cloud.version>2024.0.1</spring-cloud.version>
@@ -26,6 +23,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

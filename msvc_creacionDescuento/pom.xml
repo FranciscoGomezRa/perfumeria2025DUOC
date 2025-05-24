@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
+	<!-- Hereda del proyecto padre Aqui empieza la Modificacion -->
 	<parent>
 		<groupId>com.gsf</groupId>
 		<artifactId>perfumelandia</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-
-
 	<artifactId>msvc_creacionDescuento</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
-	<name>mscv_creacionDescuento</name>
-	<description>Microservicio de creacion de descuentos</description>
-
+	<name>msvc_creacionDescuento</name>
+	<description>MicroServicios de Descuento</description>
 	<properties>
 		<java.version>21</java.version>
 		<spring-cloud.version>2024.0.1</spring-cloud.version>
 	</properties>
 
+	<!-- Aqui termina la Modificacion -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -54,21 +52,14 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.38</version>
-			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.perfulandia.msvc.cliente</groupId>
-            <artifactId>msvc.cliente</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
