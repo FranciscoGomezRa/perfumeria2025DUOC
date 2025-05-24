@@ -4,10 +4,11 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- Aqui empezé a añadir lo necesario para setear este como padre -->
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
+		<version>3.5.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -18,9 +19,11 @@
 	<name>Perfumelandia MicroServicios</name>
 
 	<modules>
+		<module>msvc.cliente</module><!-- Puerto 8086 -->
 		<module>msvc_creacionDescuento</module> <!-- Puerto 8084 -->
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
+		<module>msvc.boleta</module> <!-- Puerto 8085 -->
 		<module>msvc_inventario</module>
 		<!-- Añade otros módulos aquí -->
 
