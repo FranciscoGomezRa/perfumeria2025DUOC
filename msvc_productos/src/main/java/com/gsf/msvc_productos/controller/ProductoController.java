@@ -1,5 +1,6 @@
 package com.gsf.msvc_productos.controller;
 
+import com.gsf.msvc_productos.dtos.ProductoEliminadoDTO;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.service.ProductoService;
 import jakarta.validation.Valid;
@@ -24,11 +25,6 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findAll());
     }
 
-    @GetMapping("nombre/{nombre_producto}")
-    public ResponseEntity<Producto> findByNombreProducto(@PathVariable String nombre_producto){
-        return ResponseEntity.status(HttpStatus.OK).body(this.productService.findByNombreProducto(nombre_producto).orElse(null));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Producto> findById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.findById(id));
@@ -40,8 +36,9 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<Producto>> deleteById(@PathVariable Long id){
+    public ResponseEntity<String> deleteById(@PathVariable Long id){
         productService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body("Producto Eliminado");
     }
 }
