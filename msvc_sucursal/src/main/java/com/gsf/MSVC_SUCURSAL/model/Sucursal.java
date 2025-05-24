@@ -3,14 +3,11 @@ package com.gsf.MSVC_SUCURSAL.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@Getter @Setter
-@ToString
-
+@Getter @Setter @ToString
+@AllArgsConstructor @NoArgsConstructor
 
 public class Sucursal {
 @Id
