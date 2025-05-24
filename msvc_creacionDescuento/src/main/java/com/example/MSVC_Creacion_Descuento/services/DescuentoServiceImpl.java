@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -24,7 +23,7 @@ public class DescuentoServiceImpl implements DescuentoService {
     @Transactional
     @Override
     public Descuento findById(Long id) {
-        return descuentoRepository.findById(id).orElseThrow(
+        return this.descuentoRepository.findById(id).orElseThrow(
                 () -> new DescuentoException("El descuento con el id: " + id+" no se encuentra en la base de datos")
         );
     }
@@ -32,17 +31,18 @@ public class DescuentoServiceImpl implements DescuentoService {
     @Transactional
     @Override
     public Descuento save(Descuento descuento){
-        if(descuentoRepository.findById(descuento.getIdDescuento()).isPresent()){
-            throw new DescuentoException("El descuento con el id: " +descuento.getIdDescuento()+" ya existe en la base de datos");
+        if (descuento.getCodigoPromocional() != null && this.descuentoRepository.findByCodigoPromocional(descuento.getCodigoPromocional()).isPresent()){
+            throw new DescuentoException("El descuento con el nombre: " + descuento.getCodigoPromocional() + " ya existe en la base de datos");//Este codigo sirve para UNIQUES para ID
         }
-        return descuentoRepository.save(descuento);
+
+        return this.descuentoRepository.save(descuento);
     }
 
     @Transactional
     @Override
     public void deleteById(Long id){
-        descuentoRepository.deleteById(id);
-    };
+        this.descuentoRepository.deleteById(id);
+    }
 
 
 
