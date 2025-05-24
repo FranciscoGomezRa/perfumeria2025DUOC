@@ -9,7 +9,6 @@
 	</parent>
 	<groupId>com.perfulandia.msvc.cliente</groupId>
 	<artifactId>msvc.cliente</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc.cliente</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
