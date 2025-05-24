@@ -1,4 +1,4 @@
-package com.gsf.MSVC_Productos;
+package com.gsf.msvc_productos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -11,6 +11,7 @@
 	</parent>
 
 
+
 	<artifactId>msvc_creacionDescuento</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
 	<name>mscv_creacionDescuento</name>
@@ -53,7 +54,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.38</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

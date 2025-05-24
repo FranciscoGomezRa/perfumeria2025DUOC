@@ -18,10 +18,12 @@
 	<name>Perfumelandia MicroServicios</name>
 
 	<modules>
-		<module>msvc_creacionDescuento</module>
+		<module>msvc_creacionDescuento</module> <!-- Puerto 8084 -->
 		<module>msvc_productos</module>
 		<module>msvc_sucursal</module>
+		<module>msvc_inventario</module>
 		<!-- Añade otros módulos aquí -->
+
 	</modules>
 
 	<properties>
