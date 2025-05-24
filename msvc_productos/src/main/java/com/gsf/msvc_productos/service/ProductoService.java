@@ -10,5 +10,5 @@ public interface ProductoService {
     Producto findById(Long id);
     Producto save(Producto producto);
     void deleteById(Long id);
-    Optional<Producto> findByNombreProducto(String nombre_producto);
+    Optional<Producto> findByNombreProducto(String nombreProducto);
 }
