@@ -1,5 +1,6 @@
 package com.perfulandia.msvc.cliente.services;
 
+import com.perfulandia.msvc.cliente.exceptions.ClienteException;
 import com.perfulandia.msvc.cliente.models.Cliente;
 import com.perfulandia.msvc.cliente.repositories.ClienteRepository;
 import jakarta.transaction.Transactional;
@@ -23,20 +24,22 @@ private ClienteRepository clienteRepository;
     @Override
     public Cliente findById(Long id) {
         return this.clienteRepository.findById(id).orElseThrow(
-                () -> new Cliente
-
+                () -> new ClienteException("El cliente con el id " + id + " no se encuentra registrado.")
         );
     }
 
     @Transactional
     @Override
     public Cliente save(Cliente cliente) {
-        return null;
+        if(this.clienteRepository.findById(cliente.getIdCliente()).isPresent()) {
+            throw new ClienteException("El cliente con el id " + cliente.getIdCliente() + " ya existe en la base de datos.");
+        }
+        return this.clienteRepository.save(cliente);
     }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
-
+        this.clienteRepository.deleteById(id);
     }
 }
