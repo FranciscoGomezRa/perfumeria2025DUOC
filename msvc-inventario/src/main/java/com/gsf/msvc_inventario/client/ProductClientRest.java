@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(name="msvc_productos",url="localhost:8082/api/v1/productos")
+@FeignClient(name="msvc-productos",url="localhost:8080/api/v1/productos")
 public interface ProductClientRest {
 
     @GetMapping

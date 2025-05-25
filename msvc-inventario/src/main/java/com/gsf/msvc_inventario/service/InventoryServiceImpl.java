@@ -40,7 +40,9 @@ public class InventoryServiceImpl implements InventoryService {
         ProductoDTO productoDTO = new ProductoDTO();
         Producto producto = this.productClientRest.findById(productoInventario.getIdProducto()).getBody();
 
-        productoDTO.setIdProducto();
+        productoDTO.setIdProducto(producto.getIdProducto());
+        productoDTO.setNombreProducto(producto.getNombreProducto());
+        productoInventarioInfoDTO.setProductoInventario(productoInventario);
         return productoInventarioInfoDTO;
     }
 
@@ -53,7 +55,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
     @Override
     public ProductoInventario addCantidadProducto(String nombre, Integer cantidad) {
-        ProductoInventario productoInventario = this.inventoryRepository.findByNombre(nombre)
+        ProductoInventario productoInventario = this.inventoryRepository.findByNombreProductoSucursal(nombre)
                 .orElseThrow(() -> new InventoryException("Producto no encontrado"));
 
         productoInventario.setCantidadProducto(productoInventario.getCantidadProducto() + cantidad);

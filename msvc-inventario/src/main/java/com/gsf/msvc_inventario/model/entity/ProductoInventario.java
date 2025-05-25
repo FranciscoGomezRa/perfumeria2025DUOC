@@ -17,7 +17,7 @@ public class ProductoInventario {
     @Column(name="id_productoSucursal")
     private Long idProductoSucursal;
 
-    @Column(name="cantidad_Producto")
+    @Column(name="cantidad_producto")
     @NotNull(message="Debe Ingresar una Cantidad")
     private Integer cantidadProducto;
 
@@ -26,7 +26,7 @@ public class ProductoInventario {
     private String nombreProductoSucursal;
 
     @Column(name="id_producto", nullable = false)
-    @NotNull("El campo id_producto no puede estar vacio")
+    @NotNull(message="El campo id_producto no puede estar vacio")
     private Long idProducto;
 
 

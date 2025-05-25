@@ -10,9 +10,9 @@
 	</parent>
 
 
-	<artifactId>msvc_sucursal</artifactId>
+	<artifactId>msvc-sucursal</artifactId>
 	<!--version>0.0.1-SNAPSHOT</version--> <!--Esto se remueve para que herede la version del padre-->
-	<name>msvc_sucursal</name>
+	<name>msvc-sucursal</name>
 	<description>MicroServicios de Sucursal</description>
 
 	<properties>
