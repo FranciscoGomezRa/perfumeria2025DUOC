@@ -1,5 +1,6 @@
 package com.gsf.msvc_inventario.controller;
 
+import com.gsf.msvc_inventario.dtos.ProductoInventarioInfoDTO;
 import com.gsf.msvc_inventario.model.entity.ProductoInventario;
 import com.gsf.msvc_inventario.service.InventoryService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class ProductoSucursalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoInventario> findById(@PathVariable Long id) {
+    public ResponseEntity<ProductoInventarioInfoDTO> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findById(id));
     }
 
