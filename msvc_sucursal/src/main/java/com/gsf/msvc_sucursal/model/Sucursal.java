@@ -1,4 +1,4 @@
-package com.gsf.MSVC_SUCURSAL.model;
+package com.gsf.msvc_sucursal.model;
 
 
 import jakarta.persistence.*;

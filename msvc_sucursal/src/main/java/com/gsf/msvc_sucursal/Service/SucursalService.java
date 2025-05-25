@@ -1,6 +1,6 @@
-package com.gsf.MSVC_SUCURSAL.Service;
+package com.gsf.msvc_sucursal.Service;
 
-import com.gsf.MSVC_SUCURSAL.model.Sucursal;
+import com.gsf.msvc_sucursal.model.Sucursal;
 
 import java.util.List;
 

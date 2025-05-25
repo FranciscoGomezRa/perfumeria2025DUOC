@@ -1,4 +1,4 @@
-package com.gsf.MSVC_SUCURSAL;
+package com.gsf.msvc_sucursal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

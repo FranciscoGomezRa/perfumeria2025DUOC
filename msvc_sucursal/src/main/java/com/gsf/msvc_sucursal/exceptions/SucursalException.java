@@ -1,4 +1,4 @@
-package com.gsf.MSVC_SUCURSAL.exceptions;
+package com.gsf.msvc_sucursal.exceptions;
 
 public class SucursalException extends RuntimeException {
     public SucursalException(String message) {

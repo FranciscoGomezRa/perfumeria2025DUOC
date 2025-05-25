@@ -1,4 +1,4 @@
-package com.gsf.MSVC_SUCURSAL;
+package com.gsf.msvc_sucursal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

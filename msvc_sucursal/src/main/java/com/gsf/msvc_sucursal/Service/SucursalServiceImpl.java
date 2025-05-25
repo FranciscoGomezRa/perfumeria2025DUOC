@@ -1,8 +1,8 @@
-package com.gsf.MSVC_SUCURSAL.Service;
+package com.gsf.msvc_sucursal.Service;
 
-import com.gsf.MSVC_SUCURSAL.exceptions.SucursalException;
-import com.gsf.MSVC_SUCURSAL.model.Sucursal;
-import com.gsf.MSVC_SUCURSAL.repositories.SucursalRepository;
+import com.gsf.msvc_sucursal.exceptions.SucursalException;
+import com.gsf.msvc_sucursal.model.Sucursal;
+import com.gsf.msvc_sucursal.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
