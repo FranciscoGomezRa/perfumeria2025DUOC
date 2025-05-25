@@ -1,6 +1,7 @@
 package com.gsf.msvc_sucursal.model;
 
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,7 +14,7 @@ import lombok.*;
 public class Sucursal {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name =" id_sucursal")
+@Column(name ="id_sucursal")
 private Long idSucursal;
 
 
