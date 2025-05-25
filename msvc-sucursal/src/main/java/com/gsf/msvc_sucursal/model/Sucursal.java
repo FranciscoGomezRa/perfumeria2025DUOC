@@ -12,39 +12,19 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 
 public class Sucursal {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name ="id_sucursal")
-private Long idSucursal;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="id_sucursal")
+    private Long idSucursal;
+
+    @Column(name="nombre_Sucursal",nullable = false)
+    @NotNull(message = "ingrese el nombre de la sucursal")
+    private String nombreSucursal;
 
 
-@Column(name="direccion_Sucursal",nullable=false)
-@NotNull(message ="ingrese una direccion valida" )
-private String direccionSucursal;
-
-
-
-@Column(name="nombre_Sucursal",nullable = false)
-@NotNull(message = "ingrese el nombre de la sucursal")
-private String nombreSucursal;
-
-
-
-
-
-
-
-
-
-    //idSucursal// Long
-    //direccionSucursal// String
-    //nombreSucursal// String
-
-
-
-
-
-
+    @Column(name="direccion_Sucursal",nullable=false)
+    @NotNull(message ="ingrese una direccion valida" )
+    private String direccionSucursal;
 
 
 }

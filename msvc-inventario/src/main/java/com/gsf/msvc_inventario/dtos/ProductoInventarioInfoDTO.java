@@ -1,6 +1,6 @@
 package com.gsf.msvc_inventario.dtos;
 
-import com.gsf.msvc_inventario.model.entity.ProductoInventario;
+import com.gsf.msvc_inventario.model.entity.Inventario;
 import lombok.*;
 
 @Getter@Setter
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ProductoInventarioInfoDTO {
 
-    private ProductoInventario productoInventario;
+    private Inventario inventario;
     private ProductoDTO productoDTO;
 
 

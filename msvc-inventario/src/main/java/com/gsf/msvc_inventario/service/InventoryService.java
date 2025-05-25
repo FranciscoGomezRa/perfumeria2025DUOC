@@ -2,13 +2,12 @@ package com.gsf.msvc_inventario.service;
 
 
 import com.gsf.msvc_inventario.dtos.ProductoInventarioInfoDTO;
-import com.gsf.msvc_inventario.model.entity.ProductoInventario;
+import com.gsf.msvc_inventario.model.entity.Inventario;
 
 import java.util.List;
 
 public interface InventoryService {
-    List<ProductoInventario> findAll();
+    List<Inventario> findAll();
     ProductoInventarioInfoDTO findById(Long id);
-    ProductoInventario save(ProductoInventario productoInventario);
-    ProductoInventario addCantidadProducto(String nombre, Integer cantidad);
+    Inventario save(Inventario inventario);
 }
