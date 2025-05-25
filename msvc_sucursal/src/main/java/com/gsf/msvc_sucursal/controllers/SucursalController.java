@@ -1,6 +1,6 @@
 package com.gsf.msvc_sucursal.controllers;
 
-import com.gsf.msvc_sucursal.Service.SucursalService;
+import com.gsf.msvc_sucursal.service.SucursalService;
 import com.gsf.msvc_sucursal.model.Sucursal;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
