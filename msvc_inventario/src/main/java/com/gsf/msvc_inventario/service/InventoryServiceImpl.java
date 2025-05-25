@@ -40,7 +40,7 @@ public class InventoryServiceImpl implements InventoryService {
         ProductoDTO productoDTO = new ProductoDTO();
         Producto producto = this.productClientRest.findById(productoInventario.getIdProducto()).getBody();
 
-        ProductoDTO.se
+        productoDTO.setIdProducto();
         return productoInventarioInfoDTO;
     }
 
