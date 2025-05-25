@@ -1,4 +1,4 @@
-package com.gsf.MSVC_SUCURSAL.Servicee;
+package com.gsf.MSVC_SUCURSAL.Service;
 
 import com.gsf.MSVC_SUCURSAL.exceptions.SucursalException;
 import com.gsf.MSVC_SUCURSAL.model.Sucursal;

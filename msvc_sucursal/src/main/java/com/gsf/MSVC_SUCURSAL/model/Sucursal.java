@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
+@Table(name="sucursal")
 @Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
 
@@ -16,15 +17,15 @@ public class Sucursal {
 private Long idSucursal;
 
 
-@Column(name="direccionSucursal",nullable=false)
+@Column(name="direccion_Sucursal",nullable=false)
 @NotNull(message ="ingrese una direccion valida" )
 private String direccionSucursal;
 
 
 
-@Column(name="nombreSucursal",nullable = false)
+@Column(name="nombre_Sucursal",nullable = false)
 @NotNull(message = "ingrese el nombre de la sucursal")
-private String nombreSucursal ;
+private String nombreSucursal;
 
 
 
