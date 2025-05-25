@@ -10,7 +10,7 @@ import lombok.*;
 @Table(name="Producto_Sucursal")
 @Getter@Setter@NoArgsConstructor@AllArgsConstructor
 @ToString
-public class ProductoSucursal {
+public class ProductoInventario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,9 @@ public class ProductoSucursal {
     @NotNull(message="Debe Ingresar un nombre de Producto")
     private String nombreProductoSucursal;
 
-
+    @Column(name="id_producto", nullable = false)
+    @NotNull("El campo id_producto no puede estar vacio")
+    private Long idProducto;
 
 
 
