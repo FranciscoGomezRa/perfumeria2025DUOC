@@ -1,6 +1,7 @@
 package com.gsf.msvc_inventario.controller;
 
-import com.gsf.msvc_inventario.model.entity.ProductoSucursal;
+import com.gsf.msvc_inventario.dtos.ProductoInventarioInfoDTO;
+import com.gsf.msvc_inventario.model.entity.ProductoInventario;
 import com.gsf.msvc_inventario.service.InventoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +22,19 @@ public class ProductoSucursalController {
     private InventoryService inventoryService;
 
     @GetMapping
-    public ResponseEntity<List<ProductoSucursal>> findAll() {
-        List<ProductoSucursal> productoSucursals = inventoryService.findAll();
-        return ResponseEntity.ok().body(productoSucursals);
+    public ResponseEntity<List<ProductoInventario>> findAll() {
+        List<ProductoInventario> productoInventarios = inventoryService.findAll();
+        return ResponseEntity.ok().body(productoInventarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoSucursal> findById(@PathVariable Long id) {
+    public ResponseEntity<ProductoInventarioInfoDTO> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProductoSucursal> save(@RequestBody @Valid ProductoSucursal productoSucursal) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(inventoryService.save(productoSucursal));
+    public ResponseEntity<ProductoInventario> save(@RequestBody @Valid ProductoInventario productoInventario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(inventoryService.save(productoInventario));
     }
 
     @PatchMapping("/{nombre}/cantidad")
