@@ -23,7 +23,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido findById(long id) {
-        return null;
+        return this.;
     }
 
     @Override
