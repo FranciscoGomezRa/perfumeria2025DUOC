@@ -24,6 +24,7 @@
 		<module>msvc-productos</module> <!-- Puerto 8080 -->
 		<module>msvc-sucursal</module> <!-- Puerto 8083 -->
 		<module>msvc-inventario</module> <!-- Puerto 8081 -->
+		<module>msvc-pedido</module>
 		<!-- Añade otros módulos aquí -->
 
 	</modules>

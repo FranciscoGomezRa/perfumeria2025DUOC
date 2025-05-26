@@ -10,4 +10,6 @@ public interface InventoryService {
     List<Inventario> findAll();
     ProductoInventarioInfoDTO findById(Long id);
     Inventario save(Inventario inventario);
+    Inventario addCantidad(Long id, Integer cantidad);
+    List<Inventario> findByIdSucursal(Long id);
 }

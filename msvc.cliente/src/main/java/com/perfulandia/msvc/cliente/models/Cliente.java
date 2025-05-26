@@ -14,6 +14,7 @@ import lombok.*;
 
 public class Cliente {
     @Id
+    @Column(name="id_cliente")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCliente;
 

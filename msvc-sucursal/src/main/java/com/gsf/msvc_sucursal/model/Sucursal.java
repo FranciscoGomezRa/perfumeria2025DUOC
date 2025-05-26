@@ -17,12 +17,12 @@ public class Sucursal {
     @Column(name ="id_sucursal")
     private Long idSucursal;
 
-    @Column(name="nombre_Sucursal",nullable = false)
+    @Column(name="nombre_sucursal",nullable = false)
     @NotNull(message = "ingrese el nombre de la sucursal")
     private String nombreSucursal;
 
 
-    @Column(name="direccion_Sucursal",nullable=false)
+    @Column(name="direccion_sucursal",nullable=false)
     @NotNull(message ="ingrese una direccion valida" )
     private String direccionSucursal;
 

@@ -37,5 +37,12 @@ public class ProductoSucursalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventoryService.save(inventario));
     }
 
-
+    @PostMapping("/{id}/add-cantidad")
+    public ResponseEntity<Inventario> addCantidad(
+            @PathVariable Long id,
+            @RequestParam int cantidad
+    ) {
+        inventoryService.addCantidad(id, cantidad);
+        return ResponseEntity.ok().build();
+    }
 }

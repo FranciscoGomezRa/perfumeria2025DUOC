@@ -44,7 +44,6 @@ public class InventoryServiceImpl implements InventoryService {
         ProductoDTO productoDTO = new ProductoDTO();
         Producto producto = this.productClientRest.findById(inventario.getIdProducto()).getBody();
 
-        productoDTO.setIdProducto(producto.getIdProducto());
         productoDTO.setNombreProducto(producto.getNombreProducto());
         productoInventarioInfoDTO.setInventario(inventario);
         return productoInventarioInfoDTO;
@@ -64,7 +63,19 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
+    @Override
+    public Inventario addCantidad(Long idInventario, Integer cantidadInventario) {
 
+        Inventario inventario = this.inventoryRepository.findById(idInventario).orElseThrow(
+                () -> new InventoryException("El producto no existe en la sucursal")
+        );
+        return this.inventoryRepository.addCantidad(idInventario, cantidadInventario);
+    }
+
+    @Override
+    public List<Inventario> findByIdSucursal(Long id) {
+        return List.of();
+    }
 
 
 }

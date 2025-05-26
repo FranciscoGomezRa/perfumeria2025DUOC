@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-    @RequestMapping("/api/v1/sucursal")
-    @Validated
+@RequestMapping("/api/v1/sucursal")
+@Validated
 
-    public class SucursalController {
+public class SucursalController {
+
         @Autowired
         private SucursalService sucursalService;
 

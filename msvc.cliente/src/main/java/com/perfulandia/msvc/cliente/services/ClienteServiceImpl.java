@@ -17,7 +17,7 @@ private ClienteRepository clienteRepository;
     @Transactional
     @Override
     public List<Cliente> findAll() {
-        return List.of();
+        return this.clienteRepository.findAll();
     }
 
     @Transactional

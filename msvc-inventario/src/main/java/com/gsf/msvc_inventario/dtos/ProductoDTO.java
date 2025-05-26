@@ -8,6 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 public class ProductoDTO {
 
-    private Long idProducto;
     private String nombreProducto;
 }
