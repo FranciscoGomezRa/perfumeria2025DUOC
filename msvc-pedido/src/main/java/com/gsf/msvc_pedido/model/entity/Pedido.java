@@ -26,10 +26,9 @@ public class Pedido {
     @NotNull(message="El campo ID cliente no puede estar vacio")
     private Long idCliente;
 
-    @Column(name="id_inventario",nullable=false)
-    @NotNull(message="El campo id_inventario no puede estar vacio")
-    private Long idInventario;
-
+    @Column(name="id_sucursal",nullable=false)
+    @NotNull(message="El campo id_sucursal no puede estar vacio")
+    private Long idSucursal;
 
 
 }

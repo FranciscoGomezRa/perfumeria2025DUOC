@@ -1,5 +1,7 @@
 package com.gsf.msvc_pedido.service;
 
+import com.gsf.msvc_pedido.clients.ClienteClientRest;
+import com.gsf.msvc_pedido.clients.SucursalClientRest;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ClienteClientRest clienteClientRest;
+
+    @Autowired
+    private SucursalClientRest sucursalClientRest;
 
     @Override
     public Pedido findById(long id) {
