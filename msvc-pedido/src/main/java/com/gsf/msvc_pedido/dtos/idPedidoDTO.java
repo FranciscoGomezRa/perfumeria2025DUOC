@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class idPedidoDTO {
+
     private Long idPedido;
 }

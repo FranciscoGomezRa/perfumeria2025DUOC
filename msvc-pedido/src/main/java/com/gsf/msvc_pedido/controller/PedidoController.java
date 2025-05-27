@@ -4,8 +4,10 @@ package com.gsf.msvc_pedido.controller;
 import com.gsf.msvc_pedido.dtos.PedidoCompletoDTO;
 import com.gsf.msvc_pedido.dtos.PedidoDTO;
 import com.gsf.msvc_pedido.dtos.idClienteDTO;
+import com.gsf.msvc_pedido.dtos.idPedidoDTO;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.service.PedidoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,8 @@ public class PedidoController {
 
 
     @PostMapping("/boleta")
-    public ResponseEntity<PedidoCompletoDTO> emisionTotalPedidos(long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.emisionTotalPedidos(id));
+    public ResponseEntity<PedidoCompletoDTO> emisionTotalPedidos(@RequestBody@Valid idPedidoDTO idpedidodto) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.emisionTotalPedidos(idpedidodto));
     }
 
 
@@ -41,7 +43,7 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Pedido> save(PedidoDTO pedidodto) {
+    public ResponseEntity<Pedido> save(@Valid @RequestBody PedidoDTO pedidodto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.save(pedidodto));
     }
 

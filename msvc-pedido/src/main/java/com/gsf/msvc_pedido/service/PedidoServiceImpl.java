@@ -44,24 +44,22 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoCompletoDTO emisionTotalPedidos(long id) {
+    public PedidoCompletoDTO emisionTotalPedidos(idPedidoDTO pedidodto) {
 
-        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+        Pedido pedido = this.pedidoRepository.findById(pedidodto.getIdPedido()).orElseThrow(
                 () -> new PedidoException("El Pedido no existe en la base de datos")
         );
 
         PedidoCompletoDTO pedidocompleto = new PedidoCompletoDTO();
         Cliente cliente = this.clienteClientRest.findById(pedido.getIdCliente()).getBody();
 
-        idPedidoDTO pedidodto = new idPedidoDTO();
-        pedidodto.setIdPedido(id);
 
         List<DetallePedido> listaDetallePedidos = this.detallePedidoClientRest.BuscadorPorIdPedido(pedidodto).getBody();
         Double totalPedido = listaDetallePedidos.stream()
                 .mapToDouble(DetallePedido::getTotal) // Convierte a DoubleStream
                 .sum();
 
-        pedidocompleto.setIdPedido(id);
+        pedidocompleto.setIdPedido(pedidodto.getIdPedido());
         pedidocompleto.setNombreCliente(cliente.getNombreCliente());
 
         pedidocompleto.setListaDetallePedidos(listaDetallePedidos);

@@ -4,13 +4,12 @@ package com.gsf.msvc_detallepedido.clients;
 import com.gsf.msvc_detallepedido.dtos.PedidoCompletoDTO;
 import com.gsf.msvc_detallepedido.dtos.PedidoDTO;
 import com.gsf.msvc_detallepedido.dtos.idClienteDTO;
+import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.model.Pedido;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,14 +20,14 @@ public interface PedidoClientRest {
     ResponseEntity<Pedido> findById(@PathVariable long id);
 
     @PostMapping("/boleta")
-    ResponseEntity<PedidoCompletoDTO> emisionTotalPedidos(long id);
+    ResponseEntity<PedidoCompletoDTO> emisionTotalPedidos(@RequestBody@Valid idPedidoDTO idpedidodto);
 
 
     @GetMapping
     ResponseEntity<List<Pedido>> findAll();
 
     @PostMapping
-    ResponseEntity<Pedido> save(PedidoDTO pedidodto);
+    ResponseEntity<Pedido> save(@Valid @RequestBody PedidoDTO pedidodto);
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteById(@PathVariable Long id);

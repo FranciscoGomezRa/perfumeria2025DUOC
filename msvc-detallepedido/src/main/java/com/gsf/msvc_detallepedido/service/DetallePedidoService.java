@@ -13,6 +13,6 @@ public interface DetallePedidoService {
     List<DetallePedido> findAll();
     DetallePedido save(DetallePedido detallePedido);
     void deleteById(Long id);
-    List<DetallePedido> BuscadorPorIdPedido(idPedidoDTO idPedidoDTO);
+    List<DetallePedido> BuscadorPorIdPedido(idPedidoDTO idpedidodto);
 
 }

@@ -17,7 +17,6 @@ public class DetallePedido {
     @Id
     @Column(name="id_detallepedido")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private Long idDetallePedido;
 
     @Column(name="id_pedido",nullable = false)

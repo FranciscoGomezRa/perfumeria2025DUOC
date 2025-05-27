@@ -5,6 +5,7 @@ package com.gsf.msvc_detallepedido.controller;
 import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
 import com.gsf.msvc_detallepedido.service.DetallePedidoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class DetallePedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<DetallePedido> save(DetallePedido detallePedido) {
+    public ResponseEntity<DetallePedido> save(@Valid @RequestBody DetallePedido detallePedido) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.detallePedidoService.save(detallePedido));
     }
@@ -49,8 +50,8 @@ public class DetallePedidoController {
 
 
     @PostMapping("/pedido")
-    public ResponseEntity<List<DetallePedido>> BuscadorPorIdPedido(idPedidoDTO idPedidoDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.detallePedidoService.BuscadorPorIdPedido(idPedidoDTO));
+    public ResponseEntity<List<DetallePedido>> BuscadorPorIdPedido(@RequestBody@Valid idPedidoDTO idpedidodto) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.detallePedidoService.BuscadorPorIdPedido(idpedidodto));
     }
 
 
