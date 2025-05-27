@@ -2,6 +2,7 @@ package com.gsf.msvc_detallepedido.clients;
 
 
 import com.gsf.msvc_detallepedido.dtos.PedidoCompletoDTO;
+import com.gsf.msvc_detallepedido.dtos.PedidoDTO;
 import com.gsf.msvc_detallepedido.dtos.idClienteDTO;
 import com.gsf.msvc_detallepedido.model.Pedido;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -27,7 +28,7 @@ public interface PedidoClientRest {
     ResponseEntity<List<Pedido>> findAll();
 
     @PostMapping
-    ResponseEntity<Pedido> save(Pedido pedido);
+    ResponseEntity<Pedido> save(PedidoDTO pedidodto);
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteById(@PathVariable Long id);

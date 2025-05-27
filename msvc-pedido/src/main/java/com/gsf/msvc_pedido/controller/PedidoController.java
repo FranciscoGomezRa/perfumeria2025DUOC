@@ -2,6 +2,7 @@ package com.gsf.msvc_pedido.controller;
 
 
 import com.gsf.msvc_pedido.dtos.PedidoCompletoDTO;
+import com.gsf.msvc_pedido.dtos.PedidoDTO;
 import com.gsf.msvc_pedido.dtos.idClienteDTO;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.service.PedidoService;
@@ -40,8 +41,8 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Pedido> save(Pedido pedido) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.save(pedido));
+    public ResponseEntity<Pedido> save(PedidoDTO pedidodto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.save(pedidodto));
     }
 
     @DeleteMapping("/{id}")
@@ -50,7 +51,7 @@ public class PedidoController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Producto Eliminado");
     }
-    @PostMapping
+    @PostMapping("/cliente")
     public List<Pedido> findByClienteId(idClienteDTO idclientedto) {
         return this.pedidoService.findByClienteId(idclientedto);
         }

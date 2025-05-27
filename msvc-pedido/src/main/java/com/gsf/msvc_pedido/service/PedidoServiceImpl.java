@@ -4,11 +4,13 @@ import com.gsf.msvc_pedido.clients.ClienteClientRest;
 import com.gsf.msvc_pedido.clients.DetallePedidoClientRest;
 import com.gsf.msvc_pedido.clients.SucursalClientRest;
 import com.gsf.msvc_pedido.dtos.PedidoCompletoDTO;
+import com.gsf.msvc_pedido.dtos.PedidoDTO;
 import com.gsf.msvc_pedido.dtos.idClienteDTO;
 import com.gsf.msvc_pedido.dtos.idPedidoDTO;
 import com.gsf.msvc_pedido.exception.PedidoException;
 import com.gsf.msvc_pedido.model.Cliente;
 import com.gsf.msvc_pedido.model.DetallePedido;
+import com.gsf.msvc_pedido.model.Sucursal;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +57,15 @@ public class PedidoServiceImpl implements PedidoService {
         pedidodto.setIdPedido(id);
 
         List<DetallePedido> listaDetallePedidos = this.detallePedidoClientRest.BuscadorPorIdPedido(pedidodto).getBody();
+        Double totalPedido = listaDetallePedidos.stream()
+                .mapToDouble(DetallePedido::getTotal) // Convierte a DoubleStream
+                .sum();
 
         pedidocompleto.setIdPedido(id);
         pedidocompleto.setNombreCliente(cliente.getNombreCliente());
+
         pedidocompleto.setListaDetallePedidos(listaDetallePedidos);
+        pedidocompleto.setTotalPedido(totalPedido);
 
         return pedidocompleto;
 
@@ -78,8 +85,13 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido save(Pedido pedido) {
+    public Pedido save(PedidoDTO pedidodto) {
+        Sucursal sucursal = this.sucursalClientRest.findById(pedidodto.getIdSucursal()).getBody();
+        Cliente cliente = this.clienteClientRest.findById(pedidodto.getIdCliente()).getBody();
 
+        Pedido pedido = new Pedido();
+        pedido.setIdSucursal(sucursal.getIdSucursal());
+        pedido.setIdCliente(cliente.getIdCliente());
 
         return this.pedidoRepository.save(pedido);
     }

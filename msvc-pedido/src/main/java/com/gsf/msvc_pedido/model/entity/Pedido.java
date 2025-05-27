@@ -27,9 +27,6 @@ public class Pedido {
     @NotNull(message="El campo id_sucursal no puede estar vacio")
     private Long idSucursal;
 
-    @Column(name="fecha_pedido")
-    private LocalDate fechaPedido;
-
     @Column(name="total_pedido")
     private Double totalPedido;
 

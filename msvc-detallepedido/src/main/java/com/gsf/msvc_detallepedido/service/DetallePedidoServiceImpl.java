@@ -7,6 +7,7 @@ import com.gsf.msvc_detallepedido.clients.SucursalClientRest;
 import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.exceptions.DetallePedidoException;
 import com.gsf.msvc_detallepedido.model.Pedido;
+import com.gsf.msvc_detallepedido.model.Producto;
 import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
 import com.gsf.msvc_detallepedido.repository.DetallePedidoRepository;
 
@@ -48,6 +49,9 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
     @Override
     public DetallePedido save(DetallePedido detallePedido) {
         Pedido pedido = this.pedidoClientRest.findById(detallePedido.getIdPedido()).getBody();
+        Producto producto = this.productoClientRest.findById(detallePedido.getIdProducto()).getBody();
+
+        detallePedido.setTotal(producto.getPrecioProducto()*detallePedido.getCantidad());
 
         return this.detallePedidoRepository.save(detallePedido);
     }

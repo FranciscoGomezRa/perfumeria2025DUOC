@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class Pedido {
 
     private Long idPedido;
-    private LocalDate fechaPedido;
     private Double totalPedido;
     private Long idCliente;
     private Long idSucursal;

@@ -18,5 +18,6 @@ public class PedidoCompletoDTO {
     private Long idPedido;
     private String nombreCliente;
     private List<DetallePedido> listaDetallePedidos;
+    private Double totalPedido;
 
 }

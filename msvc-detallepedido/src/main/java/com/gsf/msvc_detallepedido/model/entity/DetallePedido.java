@@ -1,9 +1,7 @@
 package com.gsf.msvc_detallepedido.model.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +16,7 @@ public class DetallePedido {
 
     @Id
     @Column(name="id_detallepedido")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Long idDetallePedido;
 
@@ -33,8 +32,7 @@ public class DetallePedido {
     @NotNull(message="El id_cantidad no puede estar vacio")
     private Integer cantidad;
 
-    @Column
-    @NotNull(message="El total no puede estar vacio")
-    private Double total;
+    @Column(name="total")
+    private Float total;
 
 }
