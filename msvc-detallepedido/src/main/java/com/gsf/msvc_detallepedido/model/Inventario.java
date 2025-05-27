@@ -7,10 +7,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Producto {
+public class Inventario {
+
+
+    private Long idInventario;
+
+    private Integer cantidadInventario;
 
     private Long idProducto;
-    private String descripcionProducto;
-    private String nombreProducto;
-    private Float precioProducto;
+
+    private Long idSucursal;
+
+
+
 }

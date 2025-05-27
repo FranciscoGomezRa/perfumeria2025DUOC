@@ -1,5 +1,7 @@
 package com.gsf.msvc_inventario.controller;
 
+import com.gsf.msvc_inventario.dtos.BuscaStockPorIdDTO;
+import com.gsf.msvc_inventario.dtos.BuscadorPorIDSucursalDTO;
 import com.gsf.msvc_inventario.dtos.ProductoInventarioInfoDTO;
 import com.gsf.msvc_inventario.model.entity.Inventario;
 import com.gsf.msvc_inventario.service.InventoryService;
@@ -28,7 +30,7 @@ public class ProductoSucursalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoInventarioInfoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Inventario> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findById(id));
     }
 
@@ -37,12 +39,15 @@ public class ProductoSucursalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventoryService.save(inventario));
     }
 
-    @PostMapping("/{id}/add-cantidad")
-    public ResponseEntity<Inventario> addCantidad(
-            @PathVariable Long id,
-            @RequestParam int cantidad
-    ) {
-        inventoryService.addCantidad(id, cantidad);
-        return ResponseEntity.ok().build();
+    @PostMapping("/productos")
+    public ResponseEntity<List<Inventario>> save(@RequestBody @Valid BuscadorPorIDSucursalDTO dto){
+        return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findByIdSucursal(dto.getIdSucursal()));
     }
+
+    @PostMapping("/stock")
+    public ResponseEntity<Boolean> stockInventario(@RequestBody@Valid BuscaStockPorIdDTO stockSolicitado){
+        return ResponseEntity.status(HttpStatus.OK).body(inventoryService.stockInventario(stockSolicitado));
+    }
+
+
 }

@@ -7,15 +7,16 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class DetallePedido {
+public class Inventario {
 
 
-    private Long idDetallePedido;
-    private Long idPedido;
+    private Long idInventario;
+
+    private Integer cantidadInventario;
+
     private Long idProducto;
-    private Integer cantidad;
-    private Double total;
 
+    private Long idSucursal;
 
 
 

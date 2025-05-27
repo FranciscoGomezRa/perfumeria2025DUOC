@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity
 @Table(name="pedido")
@@ -32,6 +33,7 @@ public class Pedido {
     @Column(name="id_sucursal",nullable=false)
     @NotNull(message="El campo id_sucursal no puede estar vacio")
     private Long idSucursal;
+
 
 
 

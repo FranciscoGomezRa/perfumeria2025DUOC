@@ -2,14 +2,14 @@ package com.gsf.msvc_inventario.service;
 
 import com.gsf.msvc_inventario.client.ProductClientRest;
 import com.gsf.msvc_inventario.client.SucursalClientRest;
-import com.gsf.msvc_inventario.dtos.ProductoDTO;
-import com.gsf.msvc_inventario.dtos.ProductoInventarioInfoDTO;
+import com.gsf.msvc_inventario.dtos.BuscaStockPorIdDTO;
 import com.gsf.msvc_inventario.exception.InventoryException;
 import com.gsf.msvc_inventario.model.Producto;
 import com.gsf.msvc_inventario.model.Sucursal;
 import com.gsf.msvc_inventario.model.entity.Inventario;
 import com.gsf.msvc_inventario.repository.InventoryRepository;
 import feign.FeignException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +32,11 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ProductoInventarioInfoDTO findById(Long id) {
+    public Inventario findById(Long id) {
 
-        Inventario inventario = this.inventoryRepository.findById(id).orElseThrow(
+        return this.inventoryRepository.findById(id).orElseThrow(
                 () -> new InventoryException("El producto no existe en la sucursal")
         );
-
-        ProductoInventarioInfoDTO productoInventarioInfoDTO = new ProductoInventarioInfoDTO();
-        productoInventarioInfoDTO.setInventario(inventario);
-
-        ProductoDTO productoDTO = new ProductoDTO();
-        Producto producto = this.productClientRest.findById(inventario.getIdProducto()).getBody();
-
-        productoDTO.setNombreProducto(producto.getNombreProducto());
-        productoInventarioInfoDTO.setInventario(inventario);
-        return productoInventarioInfoDTO;
     }
 
     @Override
@@ -63,18 +53,29 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-    @Override
-    public Inventario addCantidad(Long idInventario, Integer cantidadInventario) {
 
-        Inventario inventario = this.inventoryRepository.findById(idInventario).orElseThrow(
+    @Override
+    @Transactional
+    public Boolean stockInventario(BuscaStockPorIdDTO stockSolicitado) {
+
+
+        Inventario inventario = this.inventoryRepository.findByIdProductoAndIdSucursal(stockSolicitado.getIdProducto(), stockSolicitado.getIdSucursal()).orElseThrow(
                 () -> new InventoryException("El producto no existe en la sucursal")
         );
-        return this.inventoryRepository.addCantidad(idInventario, cantidadInventario);
+
+        if(inventario.getCantidadInventario()-stockSolicitado.getCantidadSolicitada() < 0){
+            throw new InventoryException("Stock Insuficiente");
+        }
+
+        inventario.setCantidadInventario(inventario.getCantidadInventario()-stockSolicitado.getCantidadSolicitada());
+        return true;
     }
+
 
     @Override
     public List<Inventario> findByIdSucursal(Long id) {
-        return List.of();
+
+        return this.inventoryRepository.findByIdSucursal(id);
     }
 
 

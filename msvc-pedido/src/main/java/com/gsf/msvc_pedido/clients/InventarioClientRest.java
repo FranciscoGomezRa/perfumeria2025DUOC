@@ -1,8 +1,8 @@
-package com.gsf.msvc_detallepedido.clients;
+package com.gsf.msvc_pedido.clients;
 
-import com.gsf.msvc_detallepedido.dtos.BuscaStockPorIdDTO;
-import com.gsf.msvc_detallepedido.dtos.BuscadorPorIDSucursalDTO;
-import com.gsf.msvc_detallepedido.model.Inventario;
+import com.gsf.msvc_pedido.dtos.BuscaStockPorIdDTO;
+import com.gsf.msvc_pedido.dtos.BuscadorPorIDSucursalDTO;
+import com.gsf.msvc_pedido.model.Inventario;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+
 @FeignClient(name="msvc-inventario",url="localhost:8081/api/v1/inventario")
 public interface InventarioClientRest {
 
