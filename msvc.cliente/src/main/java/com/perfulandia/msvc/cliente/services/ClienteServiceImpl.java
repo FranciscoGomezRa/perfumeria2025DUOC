@@ -17,7 +17,7 @@ private ClienteRepository clienteRepository;
     @Transactional
     @Override
     public List<Cliente> findAll() {
-        return List.of();
+        return this.clienteRepository.findAll();
     }
 
     @Transactional
@@ -31,8 +31,8 @@ private ClienteRepository clienteRepository;
     @Transactional
     @Override
     public Cliente save(Cliente cliente) {
-        if(this.clienteRepository.findById(cliente.getIdCliente()).isPresent()) {
-            throw new ClienteException("El cliente con el id " + cliente.getIdCliente() + " ya existe en la base de datos.");
+        if(this.clienteRepository.findByRut(cliente.getRut()).isPresent()) {
+            throw new ClienteException("El cliente con el rut " + cliente.getRut() + " ya existe en la base de datos.");
         }
         return this.clienteRepository.save(cliente);
     }
