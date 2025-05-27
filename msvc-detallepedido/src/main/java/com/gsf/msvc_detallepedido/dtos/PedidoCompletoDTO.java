@@ -1,7 +1,8 @@
-package com.gsf.msvc_pedido.dtos;
+package com.gsf.msvc_detallepedido.dtos;
 
 
-import com.gsf.msvc_pedido.model.DetallePedido;
+
+import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
 import lombok.*;
 
 import java.util.List;

@@ -1,12 +1,14 @@
 package com.gsf.msvc_detallepedido.service;
 
 import com.gsf.msvc_detallepedido.clients.InventarioClientRest;
+import com.gsf.msvc_detallepedido.clients.PedidoClientRest;
 import com.gsf.msvc_detallepedido.clients.ProductoClientRest;
 import com.gsf.msvc_detallepedido.clients.SucursalClientRest;
+import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.exceptions.DetallePedidoException;
+import com.gsf.msvc_detallepedido.model.Pedido;
 import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
 import com.gsf.msvc_detallepedido.repository.DetallePedidoRepository;
-import org.hibernate.sql.Delete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
     @Autowired
     private InventarioClientRest inventarioClientRest;
 
+    @Autowired
+    private PedidoClientRest pedidoClientRest;
 
 
     @Override
@@ -43,12 +47,23 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
 
     @Override
     public DetallePedido save(DetallePedido detallePedido) {
+        Pedido pedido = this.pedidoClientRest.findById(detallePedido.getIdPedido()).getBody();
 
         return this.detallePedidoRepository.save(detallePedido);
     }
+    @Override
+    public void deleteById(Long id) {
+        if (this.detallePedidoRepository.findById(id).isPresent()) {
+            this.detallePedidoRepository.deleteById(id);
+        } else {
+            throw new DetallePedidoException("No se encuentra el DetallePedido con:" + id);
+        }
+    }
+
 
     @Override
-    public Delete delete(DetallePedido detallePedido) {
-        return null;
+    public List<DetallePedido> BuscadorPorIdPedido(idPedidoDTO idPedidoDTO) {
+        return this.detallePedidoRepository.findByIdPedido(idPedidoDTO.getIdPedido());
     }
+
 }

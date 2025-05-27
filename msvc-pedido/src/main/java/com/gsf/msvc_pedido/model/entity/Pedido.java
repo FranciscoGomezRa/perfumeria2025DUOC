@@ -19,13 +19,6 @@ public class Pedido {
     @Column(name="id_pedido")
     private Long idPedido;
 
-    @Column(name="fecha_pedido",nullable=false)
-    @NotNull(message="La fecha no puede ser vacio")
-    private LocalDate fechaPedido;
-
-    @Column(name="total_pedido")
-    private Double totalPedido;
-
     @Column(name="id_cliente",nullable=false)
     @NotNull(message="El campo ID cliente no puede estar vacio")
     private Long idCliente;
@@ -33,6 +26,12 @@ public class Pedido {
     @Column(name="id_sucursal",nullable=false)
     @NotNull(message="El campo id_sucursal no puede estar vacio")
     private Long idSucursal;
+
+    @Column(name="fecha_pedido")
+    private LocalDate fechaPedido;
+
+    @Column(name="total_pedido")
+    private Double totalPedido;
 
 
 

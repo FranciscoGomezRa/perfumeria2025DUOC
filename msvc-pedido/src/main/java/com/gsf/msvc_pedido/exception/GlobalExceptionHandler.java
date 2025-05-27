@@ -1,10 +1,9 @@
-package com.gsf.msvc_sucursal.exceptions;
+package com.gsf.msvc_pedido.exception;
 
 
 
 
-
-import com.gsf.msvc_sucursal.dtos.ErrorDTO;
+import com.gsf.msvc_pedido.dtos.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -49,19 +48,19 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(SucursalException.class)
-    public ResponseEntity<ErrorDTO> handleSucursalException(SucursalException exception){
+    @ExceptionHandler(PedidoException.class)
+    public ResponseEntity<ErrorDTO> handlePedidoException(PedidoException exception){
 
         if(exception.getMessage().contains("no se encuentra en la base de datos")) {
-            // Esto nos sirve para cuando no existe en la base de datos el Surcursal
-            Map<String, String> errorMap = Collections.singletonMap("Surcursal no encontrado", exception.getMessage());
+            // Esto nos sirve para cuando no existe en la base de datos el Pedido
+            Map<String, String> errorMap = Collections.singletonMap("Pedido no encontrado", exception.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(this.createErrorDTO(HttpStatus.NOT_FOUND.value(), new Date(), errorMap));
 
 
         }else{
             // Esto nos sirve para cuando el medico ya existe en nuestra base de datos
-            Map<String, String> errorMap = Collections.singletonMap("Surcursal existente", exception.getMessage());
+            Map<String, String> errorMap = Collections.singletonMap("Pedido existente", exception.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(this.createErrorDTO(HttpStatus.CONFLICT.value(), new Date(), errorMap));
         }
