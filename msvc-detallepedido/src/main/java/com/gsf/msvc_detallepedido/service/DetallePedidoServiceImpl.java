@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+//FALTA EL DTO DE DETALLE PRODUCTO
 @Service
 public class DetallePedidoServiceImpl implements DetallePedidoService{
 

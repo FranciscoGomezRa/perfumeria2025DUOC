@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+//FALTA AGREGAR CHECK AL BORRAR UN INVENTARIO EN CASO DE QUE CANT>0
+
 @Service
 public class InventoryServiceImpl implements InventoryService {
 
@@ -79,6 +81,11 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
+
 }
+
+
+
+
 
 
