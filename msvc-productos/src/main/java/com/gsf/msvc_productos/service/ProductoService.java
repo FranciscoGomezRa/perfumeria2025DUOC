@@ -1,5 +1,6 @@
 package com.gsf.msvc_productos.service;
 
+import com.gsf.msvc_productos.dtos.ProductoUpdateDTO;
 import com.gsf.msvc_productos.models.Producto;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public interface ProductoService {
     Producto findById(Long id);
     Producto save(Producto producto);
     void deleteById(Long id);
+    Producto update(Long idProducto, ProductoUpdateDTO productoUpdateDTO);
     Optional<Producto> findByNombreProducto(String nombreProducto);
 }

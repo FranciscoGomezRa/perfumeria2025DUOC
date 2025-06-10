@@ -1,5 +1,6 @@
 package com.gsf.msvc_productos.service;
 
+import com.gsf.msvc_productos.dtos.ProductoUpdateDTO;
 import com.gsf.msvc_productos.exceptions.ProductoException;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.repository.ProductoRepository;
@@ -48,4 +49,20 @@ public class ProductoServiceImpl implements ProductoService {
         return this.productoRepository.findByNombreProducto(nombreProducto);
     }
 
+    @Override
+    public Producto update(Long idProducto, ProductoUpdateDTO productoUpdateDTO) {
+        Producto producto = productoRepository.findById(idProducto).orElseThrow(
+                () -> new ProductoException("El producto con id" + idProducto + "no existe")
+        );
+        if(productoUpdateDTO.getNombreProducto() != null){
+            producto.setNombreProducto(productoUpdateDTO.getNombreProducto());
+        }
+        if(productoUpdateDTO.getDescripcionProducto() != null){
+            producto.setDescripcionProducto(productoUpdateDTO.getDescripcionProducto());
+        }
+        if(productoUpdateDTO.getPrecioProducto() != 0){
+            producto.setPrecioProducto(productoUpdateDTO.getPrecioProducto());
+        }
+        return this.productoRepository.save(producto);
+    }
 }

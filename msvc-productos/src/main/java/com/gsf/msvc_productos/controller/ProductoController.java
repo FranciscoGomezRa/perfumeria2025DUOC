@@ -1,6 +1,7 @@
 package com.gsf.msvc_productos.controller;
 
 import com.gsf.msvc_productos.dtos.ProductoEliminadoDTO;
+import com.gsf.msvc_productos.dtos.ProductoUpdateDTO;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.service.ProductoService;
 import jakarta.validation.Valid;
@@ -40,5 +41,10 @@ public class ProductoController {
         productService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Producto Eliminado");
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Producto> update(@PathVariable Long id, @Valid @RequestBody ProductoUpdateDTO productoUpdateDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(this.productService.update(id, productoUpdateDTO));
     }
 }
