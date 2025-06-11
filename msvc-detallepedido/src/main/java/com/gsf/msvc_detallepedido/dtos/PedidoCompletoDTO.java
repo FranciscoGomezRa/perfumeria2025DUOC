@@ -20,4 +20,17 @@ public class PedidoCompletoDTO {
     private String nombreCliente;
     private List<DetallePedido> listaDetallePedidos;
 
+
+
+    //    @ArraySchema(
+//            schema = @Schema(
+//                    implementation = pacienteDTO.class
+//            )
+//    )
+//    @Schema(description = "Este es el paciente con el que se trabaja",
+//            implementation = PacienteDTO.class
+//    )
+//    private PacienteDTO paciente;
+
+
 }

@@ -1,5 +1,6 @@
 package com.gsf.msvc_productos.controller;
 
+import com.gsf.msvc_productos.dtos.ErrorDTO;
 import com.gsf.msvc_productos.dtos.ProductoEliminadoDTO;
 import com.gsf.msvc_productos.dtos.ProductoUpdateDTO;
 import com.gsf.msvc_productos.models.Producto;
@@ -9,6 +10,9 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,7 +57,12 @@ public class ProductoController {
 
     @ApiResponses(value= {
             @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
-            @ApiResponse(responseCode= "404", description = "Producto no Encontrado")
+            @ApiResponse(
+                    responseCode= "404",
+                    description = "Producto no Encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)))
     })
     @Parameters( value={
             @Parameter(name="id",description = "Este es el id Unico del Producto", required = true)
@@ -63,9 +72,35 @@ public class ProductoController {
     }
 
     @PostMapping
+    @Operation(summary= "Guarda un Producto",description = "Con este metodo podemos enviar un body(JSON) con los atributos del producto a ingresar")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "201",description = "Guardo exitoso"),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "El producto guardado ya se encuentra en la base de datos",
+                    content = @Content(
+                            mediaType= "application/json",
+                            //schema = @Schema(implementation = ErrorDTO.class)))
+                            //EXAMPLE OBJECT REMPLAZA AL DTO
+                            examples = @ExampleObject(
+                                    name="Error por conflicto de nombre",
+                                    value="{\"codigo\": \"statusCode\", \"date\": \"fecha\"}")
+                    )
+
+            )
+    })
+    //ESTE REQUEST BODY ES DE LA DOCUMENTACION, Relativo a la entrada que estoy esperando
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Producto a Crear",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Producto.class)
+    )
+    )
     public ResponseEntity<Producto> save(@Valid @RequestBody Producto producto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.productService.save(producto));
     }
+    //MANTENER APRETADO ALT GR PARA CHECKEAR CODIGOS HTML
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id){
