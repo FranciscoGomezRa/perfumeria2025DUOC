@@ -1,5 +1,6 @@
 package com.gsf.msvc_productos.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -9,6 +10,13 @@ import org.hibernate.annotations.Array;
 @ToString
 @Schema(description = "DTO Update Producto")
 public class ProductoUpdateDTO {
+
+    /*
+    @JsonIgnore
+    private Long idProducto
+     ATENTO A USAR ESTO EN CASO DE QUE EL HATEOS ASI LO NECESITE
+     POR EJEMPLO SI RECIBE UN ID, Y RETORNA UN DTO, DEBO ASEGURARME
+     DE QUE ESE DTO TRAIGA ID y se agrega en ese formato*/
 
     @Schema(description = "Descripcion del Producto", example="Delicioso chocolate")
     private String descripcionProducto;
