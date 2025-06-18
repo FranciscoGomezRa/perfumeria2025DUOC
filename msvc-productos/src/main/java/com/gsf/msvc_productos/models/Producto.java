@@ -35,5 +35,10 @@ public class Producto {
     @Schema(description = "Precio del producto", example="500.0")
     private Float precioProducto;
 
+    public Producto(String nombreProducto, String descripcionProducto, float precioProducto) {
+        this.nombreProducto=nombreProducto;
+        this.descripcionProducto=descripcionProducto;
+        this.precioProducto=precioProducto;
+    }
 
 }
