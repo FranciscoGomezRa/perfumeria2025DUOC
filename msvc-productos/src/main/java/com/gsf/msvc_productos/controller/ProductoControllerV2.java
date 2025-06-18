@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +39,10 @@ public class ProductoControllerV2 {
     @Autowired
     private ProductoService productService;
 
-    /*
+    @Autowired
+    ProductoModelAssembler productoModelAssembler;
+
+
     @GetMapping
     @Operation(
             summary="Obtiene todo los Productos",
@@ -46,20 +50,27 @@ public class ProductoControllerV2 {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Producto.class)
+                    )
+            )
     })
     public ResponseEntity<CollectionModel<EntityModel<Producto>>> findAll(){
         List<EntityModel<Producto>> entityModels = this.productService.findAll()
                 .stream()
-                .map(ProductoModelAssembler::toModel)
+                .map(productoModelAssembler::toModel)
                 .toList();
 
         CollectionModel<EntityModel<Producto>> collectionModel = CollectionModel.of (
                 entityModels,
-                linkTo(methodOn(ProductoControllerV2.class).findAll().withSelfRel()
+                linkTo(methodOn(ProductoControllerV2.class).findAll()).withSelfRel()
         );
-        return ResponseEntity.status(HttpStatus.OK).body();
-    }*/
+        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
+    }
 
     @GetMapping("/{id}")
     @Operation(
@@ -68,7 +79,14 @@ public class ProductoControllerV2 {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Producto.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode= "404",
                     description = "Producto no Encontrado con el id suministrado",
@@ -86,7 +104,14 @@ public class ProductoControllerV2 {
     @PostMapping
     @Operation(summary= "Guarda un Producto",description = "Con este metodo podemos enviar un body(JSON) con los atributos del producto a ingresar")
     @ApiResponses(value={
-            @ApiResponse(responseCode = "201",description = "Guardo exitoso"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Guardo exitoso",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Producto.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "409",
                     description = "El producto guardado ya se encuentra en la base de datos",

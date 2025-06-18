@@ -13,7 +13,7 @@ public class ProductoModelAssembler implements RepresentationModelAssembler<Prod
 
 
     @Override
-    public static EntityModel<Producto> toModel(Producto entity) {
+    public EntityModel<Producto> toModel(Producto entity) {
         return EntityModel.of(
                 entity,
                 linkTo(methodOn(ProductoControllerV2.class).findById(entity.getIdProducto())).withSelfRel(),
