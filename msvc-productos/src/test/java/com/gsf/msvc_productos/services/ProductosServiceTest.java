@@ -1,6 +1,7 @@
 package com.gsf.msvc_productos.services;
 
 
+import com.gsf.msvc_productos.exceptions.ProductoException;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.repository.ProductoRepository;
 import com.gsf.msvc_productos.service.ProductoServiceImpl;
@@ -60,55 +61,55 @@ public class ProductosServiceTest {
     }
 
     @Test
-    @DisplayName("Debo listar todos los medicos")
-    public void shouldFindAllMedicos(){
+    @DisplayName("Debo listar todos los productos")
+    public void shouldFindAllProductos(){
 
-        List<Medico> medicos = this.medicos;
-        medicos.add(medicoPrueba);
-        when(medicoRepository.findAll()).thenReturn(medicos);
+        List<Producto> productos = this.productos;
+        productos.add(productoPrueba);
+        when(productoRepository.findAll()).thenReturn(productos);
 
-        List<Medico> result = productoService.findAll();
+        List<Producto> result = productoService.findAll();
 
         assertThat(result).hasSize(101);
-        assertThat(result).contains(medicoPrueba);
+        assertThat(result).contains(productoPrueba);
 
-        verify(medicoRepository, times(1)).findAll();
+        verify(productoRepository, times(1)).findAll();
 
     }
 
     @Test
-    @DisplayName("Debe buscar un medico")
+    @DisplayName("Debe buscar un producto")
     public void shouldFindById(){
-        when(medicoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(medicoPrueba));
+        when(productoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(productoPrueba));
 
-        Medico result = productoService.findById(Long.valueOf(1L));
+        Producto result = productoService.findById(Long.valueOf(1L));
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(medicoPrueba);
-        verify(medicoRepository, times(1)).findById(Long.valueOf(1L));
+        assertThat(result).isEqualTo(productoPrueba);
+        verify(productoRepository, times(1)).findById(Long.valueOf(1L));
 
     }
 
     @Test
-    @DisplayName("Debe buscar un medico un I que n existe")
-    public void shouldNotFindMedicoId(){
+    @DisplayName("Debe buscar un producto un Id que no existe")
+    public void shouldNotFindProductoId(){
         Long idInexistente = (Long) 999L;
-        when(medicoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+        when(productoRepository.findById(idInexistente)).thenReturn(Optional.empty());
         assertThatThrownBy(()->{
             productoService.findById(idInexistente);
-        }).isInstanceOf(MedicoException.class)
-                .hasMessageContaining("El medico con id " +
+        }).isInstanceOf(ProductoException.class)
+                .hasMessageContaining("El producto con id " +
                         idInexistente + " no se encuentra en la base de datos");
-        verify(medicoRepository, times(1)).findById(idInexistente);
+        verify(productoRepository, times(1)).findById(idInexistente);
     }
 
     @Test
-    @DisplayName("Debe guardar un nuevo medico")
-    public void shouldSaveMedico(){
-        when(medicoRepository.save(any(Medico.class))).thenReturn(medicoPrueba);
-        Medico result = productoService.save(medicoPrueba);
+    @DisplayName("Debe guardar un nuevo producto")
+    public void shouldSaveProducto(){
+        when(productoRepository.save(any(Producto.class))).thenReturn(productoPrueba);
+        Producto result = productoService.save(productoPrueba);
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(medicoPrueba);
-        verify(medicoRepository, times(1)).save(any(Medico.class));
+        assertThat(result).isEqualTo(productoPrueba);
+        verify(productoRepository, times(1)).save(any(Producto.class));
     }
 
 

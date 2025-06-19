@@ -117,11 +117,7 @@ public class ProductoControllerV2 {
                     description = "El producto guardado ya se encuentra en la base de datos",
                     content = @Content(
                             mediaType= "application/json",
-                            //schema = @Schema(implementation = ErrorDTO.class)))
-                            //EXAMPLE OBJECT REMPLAZA AL DTO
-                            examples = @ExampleObject(
-                                    name="Error por conflicto de nombre",
-                                    value="{\"codigo\": \"statusCode\", \"date\": \"fecha\"}")
+                            schema = @Schema(implementation = ErrorDTO.class)
                     )
 
             )
@@ -137,7 +133,7 @@ public class ProductoControllerV2 {
     public ResponseEntity<Producto> save(@Valid @RequestBody Producto producto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.productService.save(producto));
     }
-    //MANTENER APRETADO ALT GR PARA CHECKEAR CODIGOS HTML
+    //MANTENER APRETADO ALT GR  y Click sobre CREATED para checkear codigos HTML
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id){

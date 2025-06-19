@@ -26,5 +26,9 @@ public class Sucursal {
     @NotNull(message ="ingrese una direccion valida" )
     private String direccionSucursal;
 
+    public Sucursal(String nombreSucursal, String direccionSucursal) {
+        this.nombreSucursal = nombreSucursal;
+        this.direccionSucursal = direccionSucursal;
+    }
 
 }

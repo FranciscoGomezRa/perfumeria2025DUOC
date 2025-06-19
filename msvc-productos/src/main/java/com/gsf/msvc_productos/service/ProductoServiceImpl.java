@@ -22,7 +22,7 @@ public class ProductoServiceImpl implements ProductoService {
     public Producto findById(Long id) {
 
         return this.productoRepository.findById(id).orElseThrow(
-                () -> new ProductoException("El producto con id" + id + "no se encuentra registrado")
+                () -> new ProductoException("El producto con id " + id + " no se encuentra en la base de datos")
 
         );
     }

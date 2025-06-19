@@ -80,11 +80,11 @@ public class ProductoController {
                     description = "El producto guardado ya se encuentra en la base de datos",
                     content = @Content(
                             mediaType= "application/json",
-                            //schema = @Schema(implementation = ErrorDTO.class)))
+                            schema = @Schema(implementation = ErrorDTO.class)
                             //EXAMPLE OBJECT REMPLAZA AL DTO
-                            examples = @ExampleObject(
+                            /*examples = @ExampleObject(
                                     name="Error por conflicto de nombre",
-                                    value="{\"codigo\": \"statusCode\", \"date\": \"fecha\"}")
+                                    value="{\"codigo\": \"statusCode\", \"date\": \"fecha\"}")*/
                     )
 
             )
