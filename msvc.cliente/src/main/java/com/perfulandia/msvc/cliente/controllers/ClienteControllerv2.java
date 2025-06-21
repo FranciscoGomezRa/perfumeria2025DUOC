@@ -1,8 +1,9 @@
-package com.perfulandia.msvc.cliente.models;
+package com.perfulandia.msvc.cliente.controllers;
 
 
 import com.perfulandia.msvc.cliente.dtos.ClienteUpdateDTO;
 import com.perfulandia.msvc.cliente.dtos.ErrorDTO;
+import com.perfulandia.msvc.cliente.models.Cliente;
 import com.perfulandia.msvc.cliente.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -74,7 +75,7 @@ public class ClienteControllerv2 {
             )
     })
 
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    @RequestBody(
             description = "Cliente a crear",
             content = @Content(
                     mediaType = "application/json",

@@ -48,7 +48,7 @@ public class ClienteController {
             @ApiResponse(responseCode = "200", description = "operacion exitosa"),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Producto no encontrado",
+                    description = "Cliente no encontrado",
                     content = @Content(
                             mediaType =  "application/json",
                             schema = @Schema(implementation = ErrorDTO.class)

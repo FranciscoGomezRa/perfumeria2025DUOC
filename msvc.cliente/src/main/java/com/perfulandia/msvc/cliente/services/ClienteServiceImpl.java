@@ -1,5 +1,6 @@
 package com.perfulandia.msvc.cliente.services;
 
+import com.perfulandia.msvc.cliente.dtos.ClienteUpdateDTO;
 import com.perfulandia.msvc.cliente.exceptions.ClienteException;
 import com.perfulandia.msvc.cliente.models.Cliente;
 import com.perfulandia.msvc.cliente.repositories.ClienteRepository;
@@ -42,4 +43,20 @@ private ClienteRepository clienteRepository;
     public void deleteById(Long id) {
         this.clienteRepository.deleteById(id);
     }
+
+    @Transactional
+    @Override
+    public Cliente update(Long id, ClienteUpdateDTO clienteUpdateDTO) {
+        Cliente cliente = this.clienteRepository.findById(id).orElseThrow(
+                () -> new ClienteException("El cliente con id " + id + " no se encuentra registrado.")
+        );
+        if(clienteUpdateDTO.getNombreCliente() != null) {
+            cliente.setNombreCliente(clienteUpdateDTO.getNombreCliente());
+        }
+        if(clienteUpdateDTO.getEmailCliente() != null) {
+            cliente.setEmailCliente(clienteUpdateDTO.getEmailCliente());
+        }
+        return this.clienteRepository.save(cliente);
+    }
+
 }
