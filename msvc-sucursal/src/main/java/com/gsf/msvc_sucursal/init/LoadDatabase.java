@@ -11,7 +11,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Profile("dev")
 @Component
@@ -26,15 +28,26 @@ public class LoadDatabase implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Faker faker = new Faker(Locale.of("es","CL"));
 
+        Set<String> nombresUtilizados= new HashSet<>();
+        String nombreSucursal;
+        Boolean flag;
+
         if(sucursalRepository.count() == 0){
             for(int i=0;i<100;i++){
                 Sucursal sucursal = new Sucursal();
 
-                //FALTA POBLAR EL OBJETO CON SUS ATRIBUTOS
-
-
-                sucursal = sucursalRepository.save(sucursal);
-                log.info("El sucursal creado es {}", sucursal);
+                flag=false;
+                while (!flag) {
+                    nombreSucursal = faker.animal().scientificName();
+                    if (!nombresUtilizados.contains(sucursal.getNombreSucursal())) {
+                        sucursal.setNombreSucursal(nombreSucursal);
+                        sucursal.setDireccionSucursal(faker.address().fullAddress());
+                        nombresUtilizados.add(sucursal.getNombreSucursal());
+                        flag=true;
+                    }
+                }
+                sucursal=sucursalRepository.save(sucursal);
+                log.info("El sucursal creada es {}", sucursal);
             }
         }
 
