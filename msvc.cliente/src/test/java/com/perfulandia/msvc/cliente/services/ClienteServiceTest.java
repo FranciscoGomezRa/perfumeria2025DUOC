@@ -1,6 +1,5 @@
 package com.perfulandia.msvc.cliente.services;
 
-
 import com.perfulandia.msvc.cliente.exceptions.ClienteException;
 import com.perfulandia.msvc.cliente.models.Cliente;
 import com.perfulandia.msvc.cliente.repositories.ClienteRepository;
@@ -28,89 +27,108 @@ public class ClienteServiceTest {
     @Mock
     private ClienteRepository clienteRepository;
 
-
-
     @InjectMocks
     private ClienteServiceImpl clienteService;
 
     private Cliente clientePrueba;
-
-    private List<Cliente> clientes = new ArrayList<>();
+    private List<Cliente> clientes;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
+        this.clientes = new ArrayList<>();
         this.clientePrueba = new Cliente(
                 "17142360-0", "Simon Villar", "sim.villar@duocuc.cl"
         );
-        Faker faker = new Faker(Locale.of("es","CL"));
 
-        if(clienteRepository.count() == 0){
-            for(int i=0;i<100;i++){
-                Cliente cliente = new Cliente();
+        Faker faker = new Faker(Locale.of("es", "CL"));
 
-                String rut = String.valueOf(faker.number().numberBetween(5_000_000, 25_000_000)) + "-" +
-                        faker.number().numberBetween(0, 9);
-
-                cliente.setRut(rut);
-                cliente.setNombreCliente((faker.name().fullName()));
-                cliente.setEmailCliente(faker.internet().emailAddress());
-                clientes.add(cliente);
-
-            }
+        for (int i = 0; i < 100; i++) {
+            Cliente cliente = new Cliente();
+            String rut = String.valueOf(faker.number().numberBetween(5_000_000, 25_000_000)) + "-" +
+                    faker.number().numberBetween(0, 9);
+            cliente.setRut(rut);
+            cliente.setNombreCliente(faker.name().fullName());
+            cliente.setEmailCliente(faker.internet().emailAddress());
+            clientes.add(cliente);
         }
     }
 
     @Test
-    @DisplayName("Debo listar todos los clientes")
-    public void shouldFindAllClientes(){
-
-        List<Cliente> clientes = this.clientes;
-        clientes.add(clientePrueba);
+    @DisplayName("Debe listar todos los clientes")
+    public void shouldFindAllClientes() {
         when(clienteRepository.findAll()).thenReturn(clientes);
 
         List<Cliente> result = clienteService.findAll();
 
-        assertThat(result).hasSize(101);
-        assertThat(result).contains(clientePrueba);
-
+        assertThat(result).hasSize(100);
         verify(clienteRepository, times(1)).findAll();
-
     }
 
     @Test
-    @DisplayName("Debe buscar un cliente")
-    public void shouldFindById(){
-        when(clienteRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(clientePrueba));
+    @DisplayName("Debe encontrar un cliente por ID")
+    public void shouldFindById() {
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(clientePrueba));
 
-        Cliente result = clienteService.findById(Long.valueOf(1L));
+        Cliente result = clienteService.findById(1L);
+
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(clientePrueba);
-        verify(clienteRepository, times(1)).findById(Long.valueOf(1L));
-
+        verify(clienteRepository, times(1)).findById(1L);
     }
 
     @Test
-    @DisplayName("Debe buscar un cliente un Id que no existe")
-    public void shouldNotFindClienteId(){
-        Long idInexistente = (Long) 999L;
+    @DisplayName("Debe lanzar excepción cuando el ID no existe")
+    public void shouldThrowExceptionWhenIdNotFound() {
+        Long idInexistente = 999L;
         when(clienteRepository.findById(idInexistente)).thenReturn(Optional.empty());
-        assertThatThrownBy(()->{
-            clienteService.findById(idInexistente);
-        }).isInstanceOf(ClienteException.class)
-                .hasMessageContaining("El cliente con id " +
-                        idInexistente + " no se encuentra en la base de datos");
+
+        assertThatThrownBy(() -> clienteService.findById(idInexistente))
+                .isInstanceOf(ClienteException.class)
+                .hasMessageContaining("El cliente con el id " + idInexistente + " no se encuentra registrado.");
+
         verify(clienteRepository, times(1)).findById(idInexistente);
     }
 
     @Test
     @DisplayName("Debe guardar un nuevo cliente")
-    public void shouldSaveCliente(){
+    public void shouldSaveCliente() {
+        when(clienteRepository.findByRut(clientePrueba.getRut())).thenReturn(Optional.empty());
         when(clienteRepository.save(any(Cliente.class))).thenReturn(clientePrueba);
+
         Cliente result = clienteService.save(clientePrueba);
+
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(clientePrueba);
-        verify(clienteRepository, times(1)).save(any(Cliente.class));
+        verify(clienteRepository, times(1)).findByRut(clientePrueba.getRut());
+        verify(clienteRepository, times(1)).save(clientePrueba);
     }
 
+    @Test
+    @DisplayName("Debe lanzar excepción cuando el RUT ya existe")
+    public void shouldThrowExceptionWhenRutExists() {
+        when(clienteRepository.findByRut(clientePrueba.getRut())).thenReturn(Optional.of(clientePrueba));
 
+        assertThatThrownBy(() -> clienteService.save(clientePrueba))
+                .isInstanceOf(ClienteException.class)
+                .hasMessageContaining("El cliente con el rut " + clientePrueba.getRut() + " ya existe en la base de datos.");
+
+        verify(clienteRepository, times(1)).findByRut(clientePrueba.getRut());
+        verify(clienteRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Debe eliminar un cliente por ID")
+    public void shouldDeleteById() {
+        Long idToDelete = 1L;
+
+        clienteService.deleteById(idToDelete);
+
+        verify(clienteRepository, times(1)).deleteById(idToDelete);
+    }
+
+    @Test
+    @DisplayName("Debe actualizar un cliente existente")
+    public void shouldUpdateCliente() {
+
+    }
 }

@@ -12,3 +12,4 @@ public interface ClienteService {
     Cliente save(Cliente cliente);
     void deleteById(Long id);
     Cliente update(Long idCliente, ClienteUpdateDTO clienteUpdateDTO);
+}

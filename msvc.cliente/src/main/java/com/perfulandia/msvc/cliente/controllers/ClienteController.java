@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,9 +88,9 @@ public class ClienteController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        this.clienteService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado");
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        clienteService.deleteById(id);
+        return ResponseEntity.ok("Cliente eliminado exitosamente"); // HTTP 200 OK
     }
 
     @PatchMapping("/{id}")
