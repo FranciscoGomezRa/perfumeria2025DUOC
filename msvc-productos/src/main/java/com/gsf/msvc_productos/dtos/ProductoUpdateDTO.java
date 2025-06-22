@@ -18,6 +18,7 @@ public class ProductoUpdateDTO {
      POR EJEMPLO SI RECIBE UN ID, Y RETORNA UN DTO, DEBO ASEGURARME
      DE QUE ESE DTO TRAIGA ID y se agrega en ese formato*/
 
+
     @Schema(description = "Descripcion del Producto", example="Delicioso chocolate")
     private String descripcionProducto;
     @Schema(description = "Nombre del Producto", example="Chocolate Suizo")

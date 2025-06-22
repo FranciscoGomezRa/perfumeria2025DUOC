@@ -97,8 +97,10 @@ public class ProductoControllerV2 {
     @Parameters( value={
             @Parameter(name="id",description = "Este es el id Unico del Producto", required = true)
     })
-    public ResponseEntity<Producto> findById(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(this.productService.findById(id));
+    public ResponseEntity<EntityModel<Producto>> findById(@PathVariable Long id){
+        EntityModel<Producto> entityModel = productoModelAssembler.toModel(
+                productService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
 
     @PostMapping
