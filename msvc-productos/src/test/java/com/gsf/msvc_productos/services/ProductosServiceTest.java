@@ -112,5 +112,23 @@ public class ProductosServiceTest {
         verify(productoRepository, times(1)).save(any(Producto.class));
     }
 
+    @Test
+    @DisplayName("Debe Actualizar un Producto")
+    public void shouldUpdateProducto(){
+        when(productoRepository.save(any(Producto.class))).thenReturn(productoPrueba);
+        Producto result = productoService.save(productoPrueba);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(productoPrueba);
+        verify(productoRepository, times(1)).save(any(Producto.class));
+    }
+
+    @Test
+    @DisplayName("Debe Eliminar un Producto existente")
+    public void shouldDeleteExistingProduct() {
+        when(productoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(productoPrueba));  // Primero verifica que existe
+        doNothing().when(productoRepository).deleteById(1L);      // Configura el delete (void)
+        productoService.deleteById(1L);
+        verify(productoRepository, times(1)).deleteById(1L);
+    }
 
 }

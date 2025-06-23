@@ -4,6 +4,7 @@ import com.gsf.msvc_productos.dtos.ProductoUpdateDTO;
 import com.gsf.msvc_productos.exceptions.ProductoException;
 import com.gsf.msvc_productos.models.Producto;
 import com.gsf.msvc_productos.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +38,12 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id){
         if(this.productoRepository.findById(id).isPresent()){
             this.productoRepository.deleteById(id);
         }else{
-            throw new ProductoException("No se muestra el producto con:" +id);
+            throw new ProductoException("No se muestra el producto con ID:" +id);
         }
     }
     @Override
