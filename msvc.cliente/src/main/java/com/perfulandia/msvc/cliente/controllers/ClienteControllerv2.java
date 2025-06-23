@@ -1,6 +1,9 @@
 package com.perfulandia.msvc.cliente.controllers;
 
 
+import com.gsf.msvc_productos.controller.ProductoControllerV2;
+import com.gsf.msvc_productos.models.Producto;
+import com.perfulandia.msvc.cliente.assemblers.ClienteModelAssembler;
 import com.perfulandia.msvc.cliente.dtos.ClienteUpdateDTO;
 import com.perfulandia.msvc.cliente.dtos.ErrorDTO;
 import com.perfulandia.msvc.cliente.models.Cliente;
@@ -17,10 +20,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/v2/clientes")
@@ -32,8 +43,39 @@ public class ClienteControllerv2 {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private ClienteModelAssembler clienteModelAssembler;
 
 
+
+    @GetMapping
+    @Operation(
+            summary="Obtiene todo los Clientes",
+            description = "Devuelve un List de Clientes en el Body"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Cliente.class)
+                    )
+            )
+    })
+    public ResponseEntity<CollectionModel<EntityModel<Cliente>>> findAll(){
+        List<EntityModel<Cliente>> entityModels = this.clienteService.findAll()
+                .stream()
+                .map(clienteModelAssembler::toModel)
+                .toList();
+
+        CollectionModel<EntityModel<Cliente>> collectionModel = CollectionModel.of (
+                entityModels,
+                linkTo(methodOn(ClienteControllerv2.class).findAll()).withSelfRel()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
+    }
 
     @GetMapping("/{id}")
     @Operation(
@@ -53,8 +95,10 @@ public class ClienteControllerv2 {
     @Parameters(value={
             @Parameter(name="id", description = "Este id es id único de cliente", required = true)
     })
-    public ResponseEntity<Cliente> findById(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(this.clienteService.findById(id));
+    public ResponseEntity<EntityModel<Cliente>> findById(@PathVariable Long id){
+        EntityModel<Cliente> entityModel = clienteModelAssembler.toModel(
+                clienteService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
 
     @PostMapping

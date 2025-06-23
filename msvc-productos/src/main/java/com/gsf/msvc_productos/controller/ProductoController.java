@@ -110,6 +110,27 @@ public class ProductoController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(
+            summary="Actualiza un Producto",
+            description = "A travez de un DTO, Actualiza un Producto con ese id"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(
+                    responseCode= "404",
+                    description = "Producto no Encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)))
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Producto a Actualizar",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Producto.class)
+            )
+    )
     public ResponseEntity<Producto> update(@PathVariable Long id, @Valid @RequestBody ProductoUpdateDTO productoUpdateDTO){
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.update(id, productoUpdateDTO));
     }
