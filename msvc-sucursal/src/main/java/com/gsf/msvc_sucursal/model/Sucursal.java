@@ -31,4 +31,5 @@ public class Sucursal {
         this.direccionSucursal = direccionSucursal;
     }
 
+
 }
