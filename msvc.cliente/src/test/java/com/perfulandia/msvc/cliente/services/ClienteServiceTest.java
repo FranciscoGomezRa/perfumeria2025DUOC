@@ -118,7 +118,7 @@ public class ClienteServiceTest {
 
     @Test
     @DisplayName("Debe Actualizar un Cliente")
-    public void shouldUpdateProducto(){
+    public void shouldUpdateCliente(){
         when(clienteRepository.save(any(Cliente.class))).thenReturn(clientePrueba);
         Cliente result = clienteRepository.save(clientePrueba);
         assertThat(result).isNotNull();
