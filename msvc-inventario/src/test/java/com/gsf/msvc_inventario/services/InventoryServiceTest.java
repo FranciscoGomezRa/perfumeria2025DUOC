@@ -158,5 +158,26 @@ public class InventoryServiceTest {
         verify(inventoryRepository, times(1)).save(any(Inventario.class));
     }
 
+    @Test
+    @DisplayName("Debe Actualizar un Inventario")
+    public void shouldUpdateInventario(){
+        when(productClientRest.findById(Long.valueOf(1L))).thenReturn(ResponseEntity.ok(productos.getFirst()));
+        when(sucursalClientRest.findById(Long.valueOf(1L))).thenReturn(ResponseEntity.ok(sucursales.getFirst()));
+
+        when(inventoryRepository.save(any(Inventario.class))).thenReturn(inventarioPrueba);
+        Inventario result = inventoryService.save(inventarioPrueba);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(inventarioPrueba);
+        verify(inventoryRepository, times(1)).save(any(Inventario.class));
+    }
+
+    @Test
+    @DisplayName("Debe Eliminar un Producto existente")
+    public void shouldDeleteExistingInventario() {
+        when(inventoryRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(inventarioPrueba));  // Primero verifica que existe
+        doNothing().when(inventoryRepository).deleteById(1L);      // Configura el delete (void)
+        inventoryService.deleteById(1L);
+        verify(inventoryRepository, times(1)).deleteById(1L);
+    }
 
 }

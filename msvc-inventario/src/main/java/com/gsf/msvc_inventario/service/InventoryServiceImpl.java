@@ -83,6 +83,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
+    @Transactional
     public void deleteById(Long id){
         if(this.inventoryRepository.findById(id).isPresent()){
             this.inventoryRepository.deleteById(id);
