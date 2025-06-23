@@ -16,5 +16,5 @@ public class ClienteUpdateDTO {
     @Schema(description = "Nombre del Cliente", example="Gonzalo")
     private String nombreCliente;
     @Schema(description = "Email del cliente", example="gonzalo123@gmail.com")
-    private float emailCliente;
+    private String emailCliente;
 }

@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
 
 
         }else{
-            // Esto nos sirve para cuando el producto ya existe en nuestra base de datos
+            // Esto nos sirve para cuando el cliente ya existe en nuestra base de datos
             Map<String, String> errorMap = Collections.singletonMap("Cliente existente", exception.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(this.createErrorDTO(HttpStatus.CONFLICT.value(), new Date(), errorMap));
