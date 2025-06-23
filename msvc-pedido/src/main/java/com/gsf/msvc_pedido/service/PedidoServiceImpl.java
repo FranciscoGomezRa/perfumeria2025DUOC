@@ -15,6 +15,7 @@ import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.List;
 
@@ -101,5 +102,13 @@ public class PedidoServiceImpl implements PedidoService {
         } else {
             throw new PedidoException("No se encuentra el Pedido con:" + id);
         }
+    }
+    @Override
+    public Pedido update(Long id, PedidoDTO pedidodto) {
+        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+                () -> new PedidoException("El Pedido no existe en la base de datos")
+        );
+        return this.pedidoRepository.save(pedido);
+
     }
 }

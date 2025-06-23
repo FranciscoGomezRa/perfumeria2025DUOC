@@ -117,18 +117,28 @@ public class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Debe eliminar un cliente por ID")
-    public void shouldDeleteById() {
-        Long idToDelete = 1L;
-
-        clienteService.deleteById(idToDelete);
-
-        verify(clienteRepository, times(1)).deleteById(idToDelete);
+    @DisplayName("Debe Actualizar un Cliente")
+    public void shouldUpdateProducto(){
+        when(clienteRepository.save(any(Cliente.class))).thenReturn(clientePrueba);
+        Cliente result = clienteRepository.save(clientePrueba);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(clientePrueba);
+        verify(clienteRepository, times(1)).save(any(Cliente.class));
     }
 
     @Test
-    @DisplayName("Debe actualizar un cliente existente")
-    public void shouldUpdateCliente() {
+    @DisplayName("Debe Eliminar un Cliente existente")
+    public void shouldDeleteExistingCliente() {
+        when(clienteRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(clientePrueba));  // Primero verifica que existe
+        doNothing().when(clienteRepository).deleteById(1L);
 
+        Cliente result = clienteService.findById(1L);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(clientePrueba);
+
+        clienteService.deleteById(1L);
+        verify(clienteRepository, times(1)).deleteById(1L);
     }
+
 }

@@ -30,7 +30,11 @@ public class Pedido {
     @Column(name="total_pedido")
     private Double totalPedido;
 
+    public Pedido(Long idCliente, Long idSucursal){
+        this.idCliente = idCliente;
+        this.idSucursal = idSucursal;
 
+    }
 
 
 }

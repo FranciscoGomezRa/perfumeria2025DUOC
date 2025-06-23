@@ -15,4 +15,5 @@ public interface PedidoService {
     Pedido save(PedidoDTO pedidodto);
     void deleteById(Long id);
     PedidoCompletoDTO emisionTotalPedidos(idPedidoDTO pedidodto);
+    Pedido update(Long id ,PedidoDTO pedidodto);
 }

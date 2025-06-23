@@ -172,7 +172,7 @@ public class InventoryServiceTest {
     }
 
     @Test
-    @DisplayName("Debe Eliminar un Producto existente")
+    @DisplayName("Debe Eliminar un Inventario existente")
     public void shouldDeleteExistingInventario() {
         when(inventoryRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(inventarioPrueba));  // Primero verifica que existe
         doNothing().when(inventoryRepository).deleteById(1L);      // Configura el delete (void)

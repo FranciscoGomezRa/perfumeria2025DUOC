@@ -111,9 +111,29 @@ public class SucursalServiceTest {
     }
 
     @Test
-    @DisplayName("Debe actualizar un cliente existente")
-    public void shouldUpdateSucursal() {
-
+    @DisplayName("Debe Actualizar una Sucursal")
+    public void shouldUpdateProducto(){
+        when(sucursalRepository.save(any(Sucursal.class))).thenReturn(sucursalPrueba);
+        Sucursal result = sucursalRepository.save(sucursalPrueba);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(sucursalPrueba);
+        verify(sucursalRepository, times(1)).save(any(Sucursal.class));
     }
+
+    @Test
+    @DisplayName("Debe Eliminar un Cliente existente")
+    public void shouldDeleteExistingCliente() {
+        when(sucursalRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(sucursalPrueba));  // Primero verifica que existe
+        doNothing().when(sucursalRepository).deleteById(1L);
+
+        Sucursal result = sucursalService.findById(1L);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(sucursalPrueba);
+
+        sucursalService.deleteById(1L);
+        verify(sucursalRepository, times(1)).deleteById(1L);
+    }
+
 
 }

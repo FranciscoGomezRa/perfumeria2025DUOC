@@ -5,6 +5,7 @@ import com.gsf.msvc_detallepedido.clients.PedidoClientRest;
 import com.gsf.msvc_detallepedido.clients.ProductoClientRest;
 import com.gsf.msvc_detallepedido.clients.SucursalClientRest;
 import com.gsf.msvc_detallepedido.dtos.BuscaStockPorIdDTO;
+import com.gsf.msvc_detallepedido.dtos.DetallePedidoUpdateDTO;
 import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.exceptions.DetallePedidoException;
 import com.gsf.msvc_detallepedido.model.Inventario;
@@ -83,4 +84,14 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
         return this.detallePedidoRepository.findByIdPedido(idpedidodto.getIdPedido());
     }
 
+    @Override
+    public DetallePedido update(Long idDetallePedido, DetallePedidoUpdateDTO detallePedidoUpdateDTO) {
+        DetallePedido detallePedido = detallePedidoRepository.findById(idDetallePedido).orElseThrow(
+                () -> new DetallePedidoException("El detalle Pedido con id" + idDetallePedido + "no existe")
+        );
+        if(detallePedidoUpdateDTO.getCantidad() != null){
+            detallePedido.setCantidad(detallePedidoUpdateDTO.getCantidad());
+        }
+        return this.detallePedidoRepository.save(detallePedido);
+    }
 }

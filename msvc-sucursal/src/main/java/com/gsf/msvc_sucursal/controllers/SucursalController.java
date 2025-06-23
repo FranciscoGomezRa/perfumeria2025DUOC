@@ -1,5 +1,6 @@
 package com.gsf.msvc_sucursal.controllers;
 
+import com.gsf.msvc_sucursal.dtos.SucursalUpdateDTO;
 import com.gsf.msvc_sucursal.service.SucursalService;
 import com.gsf.msvc_sucursal.model.Sucursal;
 import jakarta.validation.Valid;
@@ -39,5 +40,10 @@ public class SucursalController {
         public ResponseEntity<Void> delete(@PathVariable Long id) {
             this.sucursalService.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        @PatchMapping("/{id}")
+        public ResponseEntity<Sucursal> update(@PathVariable Long id, @Valid @RequestBody SucursalUpdateDTO sucursalUpdateDTO) {
+            return ResponseEntity.status(HttpStatus.OK).body(this.sucursalService.update(id, sucursalUpdateDTO));
         }
 }

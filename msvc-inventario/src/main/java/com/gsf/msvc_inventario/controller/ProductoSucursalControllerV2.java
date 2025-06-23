@@ -42,7 +42,7 @@ public class ProductoSucursalControllerV2 {
     private InventoryService inventoryService;
 
     @Autowired
-    InventarioModelAssembler inventarioModelAssembler;
+    private InventarioModelAssembler inventarioModelAssembler;
 
     @GetMapping
     @Operation(

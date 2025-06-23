@@ -17,7 +17,7 @@ public class InventarioModelAssembler implements RepresentationModelAssembler<In
     public EntityModel<Inventario> toModel(Inventario entity) {
 
         Link linkProductos = Link.of("http://localhost:8080/api/v1/productos/"+entity.getIdProducto()).withRel("producto");
-        Link linkSucursal = Link.of("http://localhost:8083/api/v1/sucursal/"+entity.getIdProducto()).withRel("sucursal");
+        Link linkSucursal = Link.of("http://localhost:8083/api/v1/sucursal/"+entity.getIdSucursal()).withRel("sucursal");
         return EntityModel.of(
                 entity,
                 linkTo(methodOn(ProductoSucursalControllerV2.class).findById(entity.getIdInventario())).withSelfRel(),
