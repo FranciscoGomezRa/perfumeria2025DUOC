@@ -13,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
+@Schema(description = "Entidad que representa Cliente y sus atributos")
 public class Cliente {
     @Id
     @Column(name="id_cliente")

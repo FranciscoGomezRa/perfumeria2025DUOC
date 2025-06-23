@@ -1,6 +1,7 @@
 package com.gsf.msvc_pedido.controller;
 
 
+import com.gsf.msvc_pedido.assemblers.PedidoModelAssembler;
 import com.gsf.msvc_pedido.dtos.*;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.service.PedidoService;
@@ -14,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,14 +24,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
-@RequestMapping("api/v1/pedido")
+@RequestMapping("api/v2/pedido")
 @Validated
-@Tag(name = "PedidoController")
-public class PedidoController {
+@Tag(name = "PedidoController HATEOAS")
+public class PedidoControllerV2 {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private PedidoModelAssembler pedidoModelAssembler;
 
 
     @GetMapping("/{id}")
@@ -49,8 +58,11 @@ public class PedidoController {
     @Parameters( value={
             @Parameter(name="id",description = "Este es el id Unico del Pedido", required = true)
     })
-    public ResponseEntity<Pedido> findById(@PathVariable long id){
-            return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.findById(id));};
+    public ResponseEntity<EntityModel<Pedido>> findById(@PathVariable Long id){
+        EntityModel<Pedido> entityModel = pedidoModelAssembler.toModel(
+                pedidoService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(entityModel);
+    }
 
 
     @PostMapping("/boleta")
@@ -68,8 +80,17 @@ public class PedidoController {
     @ApiResponses(value= {
             @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
     })
-    public ResponseEntity<List<Pedido>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.findAll());
+    public ResponseEntity<CollectionModel<EntityModel<Pedido>>> findAll(){
+        List<EntityModel<Pedido>> entityModels = this.pedidoService.findAll()
+                .stream()
+                .map(pedidoModelAssembler::toModel)
+                .toList();
+
+        CollectionModel<EntityModel<Pedido>> collectionModel = CollectionModel.of (
+                entityModels,
+                linkTo(methodOn(PedidoControllerV2.class).findAll()).withSelfRel()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
     }
 
     @PostMapping
