@@ -1,6 +1,11 @@
 package com.gsf.msvc_inventario.controller;
 
-import com.gsf.msvc_inventario.dtos.*;
+import com.gsf.msvc_inventario.assemblers.InventarioModelAssembler;
+import com.gsf.msvc_inventario.dtos.BuscaStockPorIdDTO;
+import com.gsf.msvc_inventario.dtos.BuscadorPorIDSucursalDTO;
+import com.gsf.msvc_inventario.dtos.ErrorDTO;
+import com.gsf.msvc_inventario.dtos.InventoryUpdateDTO;
+import com.gsf.msvc_inventario.model.Producto;
 import com.gsf.msvc_inventario.model.entity.Inventario;
 import com.gsf.msvc_inventario.service.InventoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,15 +28,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
-@RequestMapping("api/v1/inventario")
+@RequestMapping("api/v2/inventario")
 @Validated
 
-@Tag(name="Inventarios", description="Operacion CRUD Inventario")
-public class ProductoSucursalController {
+@Tag(name="Inventarios HATEOAS", description="Operacion CRUD Inventario HATEOAS")
+public class ProductoSucursalControllerV2 {
 
     @Autowired
     private InventoryService inventoryService;
+
+    @Autowired
+    InventarioModelAssembler inventarioModelAssembler;
 
     @GetMapping
     @Operation(
@@ -36,12 +50,27 @@ public class ProductoSucursalController {
             description = "Devuelve un List de Inventarios en el Body"
     )
 
-    @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
+    @ApiResponses( value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operacion existosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Inventario.class)
+                    )
+            )
     })
-    public ResponseEntity<List<Inventario>> findAll() {
-        List<Inventario> inventarios = inventoryService.findAll();
-        return ResponseEntity.ok().body(inventarios);
+    public ResponseEntity<CollectionModel<EntityModel<Inventario>>> findAll(){
+        List<EntityModel<Inventario>> entityModels = this.inventoryService.findAll()
+                .stream()
+                .map(inventarioModelAssembler::toModel)
+                .toList();
+
+        CollectionModel<EntityModel<Inventario>> collectionModel = CollectionModel.of (
+                entityModels,
+                linkTo(methodOn(ProductoSucursalControllerV2.class).findAll()).withSelfRel()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
     }
 
     @GetMapping("/{id}")
@@ -51,7 +80,14 @@ public class ProductoSucursalController {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operacion existosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Inventario.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode= "404",
                     description = "Inventario no Encontrado con el id suministrado",
@@ -62,8 +98,10 @@ public class ProductoSucursalController {
     @Parameters( value={
             @Parameter(name="id",description = "Este es el id Unico del Inventario", required = true)
     })
-    public ResponseEntity<Inventario> findById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findById(id));
+    public ResponseEntity<EntityModel<Inventario>> findById(@PathVariable Long id){
+        EntityModel<Inventario> entityModel = inventarioModelAssembler.toModel(
+                inventoryService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
 
     @PostMapping
@@ -92,7 +130,6 @@ public class ProductoSucursalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventoryService.save(inventario));
     }
 
-
     @PostMapping("/productos")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Busca todos los inventarios asociados a un ID de SUCURSAL, REQUIERE UN DTO",
@@ -104,7 +141,6 @@ public class ProductoSucursalController {
     public ResponseEntity<List<Inventario>> save(@RequestBody @Valid BuscadorPorIDSucursalDTO dto){
         return ResponseEntity.status(HttpStatus.OK).body(inventoryService.findByIdSucursal(dto.getIdSucursal()));
     }
-
 
     @PostMapping("/stock")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(

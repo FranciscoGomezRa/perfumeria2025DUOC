@@ -35,7 +35,6 @@ public class LoadDatabase implements CommandLineRunner {
         if(sucursalRepository.count() == 0){
             for(int i=0;i<100;i++){
                 Sucursal sucursal = new Sucursal();
-
                 flag=false;
                 while (!flag) {
                     nombreSucursal = faker.animal().scientificName();
