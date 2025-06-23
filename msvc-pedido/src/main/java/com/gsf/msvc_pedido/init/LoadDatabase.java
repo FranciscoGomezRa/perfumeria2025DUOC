@@ -52,14 +52,7 @@ public class LoadDatabase implements CommandLineRunner {
                 pedidoRepository.save(pedido);
                 log.info("El producto asociado a Detalle Pedido es {}", pedido);
             }
-            for(int i=0;i<100;i++) {
-                Long idPrueba = (long) i + 1;
-                Pedido pedido = pedidoRepository.findById(idPrueba).get();
-                Double totalPedido = pedidoServiceImpl.emisionTotalPedidos(new idPedidoDTO(idPrueba)).getTotalPedido();
 
-                pedido.setTotalPedido(totalPedido);
-                pedidoRepository.save(pedido);
-            }
         }
 
     }

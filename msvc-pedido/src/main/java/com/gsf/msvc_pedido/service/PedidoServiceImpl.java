@@ -13,6 +13,7 @@ import com.gsf.msvc_pedido.model.DetallePedido;
 import com.gsf.msvc_pedido.model.Sucursal;
 import com.gsf.msvc_pedido.model.entity.Pedido;
 import com.gsf.msvc_pedido.repository.PedidoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,6 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     }
 
+    @Transactional
     @Override
     public PedidoCompletoDTO emisionTotalPedidos(idPedidoDTO pedidodto) {
 
@@ -83,6 +85,7 @@ public class PedidoServiceImpl implements PedidoService {
         return this.pedidoRepository.findByIdCliente(idclientedto.getIdCliente());
     }
 
+    @Transactional
     @Override
     public Pedido save(PedidoDTO pedidodto) {
         Sucursal sucursal = this.sucursalClientRest.findById(pedidodto.getIdSucursal()).getBody();

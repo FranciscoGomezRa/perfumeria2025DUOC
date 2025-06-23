@@ -4,6 +4,8 @@ package com.gsf.msvc_detallepedido.init;
 
 import com.gsf.msvc_detallepedido.clients.PedidoClientRest;
 import com.gsf.msvc_detallepedido.clients.ProductoClientRest;
+import com.gsf.msvc_detallepedido.dtos.PedidoDTO;
+import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.model.Pedido;
 import com.gsf.msvc_detallepedido.model.Producto;
 import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
@@ -54,6 +56,17 @@ public class LoadDatabase implements CommandLineRunner {
 
                 log.info("El producto asociado a Detalle Pedido es {}", detallePedido);
             }
+
+            for(int i=0;i<100;i++) {
+                Long idPrueba = (long) i + 1;
+                Pedido pedido = pedidoClientRest.findById(idPrueba).getBody();
+
+                pedidoClientRest.emisionTotalPedidos(new idPedidoDTO(idPrueba));
+                pedidoClientRest.save(new PedidoDTO(pedido.getIdCliente(), pedido.getIdSucursal()));
+
+            }
+
+
         }
 
     }
