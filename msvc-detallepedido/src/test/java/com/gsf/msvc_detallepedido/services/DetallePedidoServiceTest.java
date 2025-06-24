@@ -385,6 +385,15 @@ public class DetallePedidoServiceTest {
         when(detallePedidoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(detallePedidoPrueba));  // Primero verifica que existe
         doNothing().when(detallePedidoRepository).deleteById(1L);      // Configura el delete (void)
         detallePedidoService.deleteById(1L);
+
+        Long idInexistente = (Long) 1L;
+        when(detallePedidoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+        assertThatThrownBy(()->{
+            detallePedidoService.findById(idInexistente);
+        }).isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("El Detalle Pedido no existe en la base de datos");
+        verify(detallePedidoRepository, times(2)).findById(idInexistente);
+
         verify(detallePedidoRepository, times(1)).deleteById(1L);
     }
 }
