@@ -36,6 +36,7 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class MsvcPedidoServiceTest {
 /*idPedido idCliente idSucursal */
+    /*CADA WHEN TIENE QUE ESTAR RELACIONADO CON UN VERIFY*/
     
     @Mock
     private PedidoRepository pedidoRepository;
@@ -125,17 +126,17 @@ public class MsvcPedidoServiceTest {
     @Test
     @DisplayName("Debe guardar un nuevo Pedido válido")
     public void shouldSaveValidPedido() {
-        // Given
+
         PedidoDTO pedidoDTO = new PedidoDTO(1L, 1L);
 
         when(clienteClientRest.findById(1L)).thenReturn(ResponseEntity.ok(clientePrueba));
         when(sucursalClientRest.findById(1L)).thenReturn(ResponseEntity.ok(sucursales.getFirst()));
         when(pedidoRepository.save(any(Pedido.class))).thenReturn(pedidoPrueba);
 
-        // When
+
         Pedido result = pedidoService.save(pedidoDTO);
 
-        // Then
+
         assertThat(result)
                 .isNotNull()
                 .isEqualTo(pedidoPrueba);
@@ -182,19 +183,19 @@ public class MsvcPedidoServiceTest {
     @Test
     @DisplayName("Debe lanzar PedidoException al actualizar pedido inexistente")
     public void shouldThrowPedidoExceptionWhenUpdatingNonExistentPedido() {
-        // Arrange
+
         Long idPedidoInexistente = 999L;
         PedidoDTO dto = new PedidoDTO();
 
         when(pedidoRepository.findById(idPedidoInexistente))
                 .thenReturn(Optional.empty());
 
-        // Act & Assert
+        // :3
         assertThatThrownBy(() -> pedidoService.update(idPedidoInexistente, dto))
                 .isInstanceOf(PedidoException.class)
                 .hasMessageContaining("El Pedido no existe en la base de datos");
 
-        // Verify
+        // Verifkies
         verify(pedidoRepository, times(1)).findById(idPedidoInexistente);
         verify(pedidoRepository, never()).save(any());
     }
@@ -205,6 +206,15 @@ public class MsvcPedidoServiceTest {
         when(pedidoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(pedidoPrueba));  // Primero verifica que existe
         doNothing().when(pedidoRepository).deleteById(1L);      // Configura el delete (void)
         pedidoService.deleteById(1L);
+
+        Long idInexistente = (Long) 1L;
+        when(pedidoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+        assertThatThrownBy(()->{
+            pedidoService.findById(idInexistente);
+        }).isInstanceOf(PedidoException.class)
+                .hasMessageContaining("El Pedido no existe en la base de datos");
+        verify(pedidoRepository, times(2)).findById(idInexistente);
+
         verify(pedidoRepository, times(1)).deleteById(1L);
     }
     @Test
@@ -230,7 +240,7 @@ public class MsvcPedidoServiceTest {
     @Test
     @DisplayName("Debe manejar lista vacía de detalles en emisionPedidoCalculado")
     public void shouldHandleEmptyDetalleListInEmisionPedidoCalculado() {
-        // Arrange
+
         Long idPedidoExistente = 1L;
         Pedido pedidoMock = new Pedido();
         pedidoMock.setIdCliente(1L);

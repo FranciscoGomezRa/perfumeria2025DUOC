@@ -177,6 +177,15 @@ public class InventoryServiceTest {
         when(inventoryRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(inventarioPrueba));  // Primero verifica que existe
         doNothing().when(inventoryRepository).deleteById(1L);      // Configura el delete (void)
         inventoryService.deleteById(1L);
+
+        Long idInexistente = (Long) 1L;
+        when(inventoryRepository.findById(idInexistente)).thenReturn(Optional.empty());
+        assertThatThrownBy(()->{
+            inventoryService.findById(idInexistente);
+        }).isInstanceOf(InventoryException.class)
+                .hasMessageContaining("El producto no existe en la sucursal");
+        verify(inventoryRepository, times(2)).findById(idInexistente);
+
         verify(inventoryRepository, times(1)).deleteById(1L);
     }
 
