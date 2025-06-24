@@ -52,9 +52,22 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
 
     @Override
     public DetallePedido save(DetallePedido detallePedido) {
+
         Pedido pedido = this.pedidoClientRest.findById(detallePedido.getIdPedido()).getBody();
+        if (pedido == null){
+            throw new DetallePedidoException("El pedido con id " + detallePedido.getIdPedido() + " no existe");
+        }
+
         Producto producto = this.productoClientRest.findById(detallePedido.getIdProducto()).getBody();
+        if (producto == null){
+            throw new DetallePedidoException("El producto con id " + detallePedido.getIdProducto()+ " no existe");
+        }
         Sucursal sucursal = this.sucursalClientRest.findById(pedido.getIdSucursal()).getBody();
+
+        if (sucursal == null) {
+            throw new DetallePedidoException("La sucursal con id " + pedido.getIdSucursal() + " no existe");
+        }
+
 
         BuscaStockPorIdDTO buscastockporidDTO = new BuscaStockPorIdDTO();
         buscastockporidDTO.setIdProducto(detallePedido.getIdProducto());
@@ -64,8 +77,6 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
         Boolean checker =this.inventarioClientRest.stockInventario(buscastockporidDTO).getBody();
 
         detallePedido.setTotal(producto.getPrecioProducto()*detallePedido.getCantidad());
-
-
 
         return this.detallePedidoRepository.save(detallePedido);
     }
@@ -81,7 +92,10 @@ public class DetallePedidoServiceImpl implements DetallePedidoService{
 
     @Override
     public List<DetallePedido> BuscadorPorIdPedido(idPedidoDTO idpedidodto) {
-        return this.detallePedidoRepository.findByIdPedido(idpedidodto.getIdPedido());
+        if(this.detallePedidoRepository.findById(idpedidodto.getIdPedido()).isPresent()){
+            return this.detallePedidoRepository.findByIdPedido(idpedidodto.getIdPedido());
+        }
+        throw new DetallePedidoException("No se encuentra el PEDIDO con ID:" + idpedidodto.getIdPedido());
     }
 
     @Override

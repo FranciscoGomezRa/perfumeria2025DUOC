@@ -7,8 +7,8 @@ import com.gsf.msvc_detallepedido.clients.PedidoClientRest;
 import com.gsf.msvc_detallepedido.clients.ProductoClientRest;
 import com.gsf.msvc_detallepedido.clients.SucursalClientRest;
 import com.gsf.msvc_detallepedido.dtos.BuscaStockPorIdDTO;
+import com.gsf.msvc_detallepedido.dtos.DetallePedidoUpdateDTO;
 import com.gsf.msvc_detallepedido.dtos.PedidoCompletoDTO;
-import com.gsf.msvc_detallepedido.dtos.idPedidoDTO;
 import com.gsf.msvc_detallepedido.exceptions.DetallePedidoException;
 import com.gsf.msvc_detallepedido.model.*;
 import com.gsf.msvc_detallepedido.model.entity.DetallePedido;
@@ -221,7 +221,121 @@ public class DetallePedidoServiceTest {
         verify(inventarioClientRest, times(1)).stockInventario(any(BuscaStockPorIdDTO.class));
         verify(detallePedidoRepository, times(1)).save(any(DetallePedido.class));
     }
+    @Test
+    @DisplayName("Debe lanzar DetalleException por stock insuficiente")
+    public void shouldThrowDetallePedidoExceptionWhenStockIsInsufficient() {
 
+        DetallePedido detalleInvalido = detallePedidoPrueba;
+
+        when(productClientRest.findById(1L)).thenReturn(ResponseEntity.ok(productos.getFirst()));
+        when(pedidoClientRest.findById(1L)).thenReturn(ResponseEntity.ok(this.pedidoPrueba));
+        when(sucursalClientRest.findById(1L)).thenReturn(ResponseEntity.ok(sucursales.getFirst()));
+
+
+        when(inventarioClientRest.stockInventario(any(BuscaStockPorIdDTO.class)))
+                .thenThrow(new DetallePedidoException("Stock Insuficiente"));
+
+
+        assertThatThrownBy(() -> detallePedidoService.save(detalleInvalido))
+                .isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("Stock Insuficiente");
+
+        verify(productClientRest, times(1)).findById(1L);
+        verify(pedidoClientRest, times(1)).findById(1L);
+        verify(sucursalClientRest, times(1)).findById(1L);
+        verify(inventarioClientRest, times(1)).stockInventario(any(BuscaStockPorIdDTO.class));
+        verify(detallePedidoRepository, never()).save(any()); // ¡No debe guardarse!
+    }
+
+    @Test
+    @DisplayName("Debe lanzar DetalleException 404 cuando la Sucursal no existe")
+    public void shouldThrowDetallePedidoExceptionWhenSucursalNotFound() {
+
+        Long idSucursalInexistente = 999L;
+        DetallePedido detalleInvalido = detallePedidoPrueba; // Asegúrate de que use idSucursalInexistente
+
+
+        Pedido pedidoMock = new Pedido();
+        pedidoMock.setIdSucursal(idSucursalInexistente); // Mismo ID que la sucursal no encontrada
+        when(pedidoClientRest.findById(detalleInvalido.getIdPedido()))
+                .thenReturn(ResponseEntity.ok(pedidoMock));
+
+
+        Producto productoMock = new Producto();
+        productoMock.setPrecioProducto((float) 100); // Precio para calcular el total
+        when(productClientRest.findById(detalleInvalido.getIdProducto()))
+                .thenReturn(ResponseEntity.ok(productoMock));
+
+
+        when(sucursalClientRest.findById(idSucursalInexistente))
+                .thenReturn(ResponseEntity.notFound().build()); // Simula 404
+
+        //ASSERT
+        assertThatThrownBy(() -> detallePedidoService.save(detalleInvalido))
+                .isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("La sucursal con id " + idSucursalInexistente + " no existe");
+
+        // Verify(s)
+        verify(pedidoClientRest, times(1)).findById(detalleInvalido.getIdPedido());
+        verify(productClientRest, times(1)).findById(detalleInvalido.getIdProducto());
+        verify(sucursalClientRest, times(1)).findById(idSucursalInexistente);
+        verify(inventarioClientRest, never()).stockInventario(any()); // No debe llamarse
+        verify(detallePedidoRepository, never()).save(any());
+    }
+    @Test
+    @DisplayName("Debe lanzar DetalleException 404 cuando el Pedido no existe")
+    public void shouldThrowDetallePedidoExceptionWhenPedidoNotFound() {
+        // Arrange
+        Long idPedidoInexistente = 999L;
+        DetallePedido detalleInvalido = detallePedidoPrueba;
+        detalleInvalido.setIdPedido(idPedidoInexistente); // Forzar ID inexistente
+
+        // Mock de Pedido (no existe)
+        when(pedidoClientRest.findById(idPedidoInexistente))
+                .thenReturn(ResponseEntity.notFound().build()); // Simula 404
+
+        // ASSERT
+        assertThatThrownBy(() -> detallePedidoService.save(detalleInvalido))
+                .isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("El pedido con id " + idPedidoInexistente + " no existe");
+
+        // Verify(s)
+        verify(pedidoClientRest, times(1)).findById(idPedidoInexistente);
+        verify(productClientRest, never()).findById(any()); // No debería llamarse si pedido falla
+        verify(sucursalClientRest, never()).findById(any());
+        verify(inventarioClientRest, never()).stockInventario(any());
+        verify(detallePedidoRepository, never()).save(any());
+    }
+    @Test
+    @DisplayName("Debe lanzar DetalleException 404 cuando el Producto no existe")
+    public void shouldThrowDetallePedidoExceptionWhenProductoNotFound() {
+
+        Long idProductoInexistente = 999L;
+        DetallePedido detalleInvalido = detallePedidoPrueba;
+        detalleInvalido.setIdProducto(idProductoInexistente); // Forzar ID inexistente
+
+
+        Pedido pedidoMock = new Pedido();
+        pedidoMock.setIdSucursal(1L);
+        when(pedidoClientRest.findById(detalleInvalido.getIdPedido()))
+                .thenReturn(ResponseEntity.ok(pedidoMock));
+
+
+        when(productClientRest.findById(idProductoInexistente))
+                .thenReturn(ResponseEntity.notFound().build()); // Simula 404
+
+        // ASSERT
+        assertThatThrownBy(() -> detallePedidoService.save(detalleInvalido))
+                .isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("El producto con id " + idProductoInexistente + " no existe");
+
+        // Verify(s)
+        verify(pedidoClientRest, times(1)).findById(detalleInvalido.getIdPedido());
+        verify(productClientRest, times(1)).findById(idProductoInexistente);
+        verify(sucursalClientRest, never()).findById(any()); // No debería llamarse si producto falla
+        verify(inventarioClientRest, never()).stockInventario(any());
+        verify(detallePedidoRepository, never()).save(any());
+    }
     @Test
     @DisplayName("Debe Actualizar un DetallePedido")
     public void shouldUpdateDetallePedido(){
@@ -240,6 +354,29 @@ public class DetallePedidoServiceTest {
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(detallePedidoPrueba);
         verify(detallePedidoRepository, times(1)).save(any(DetallePedido.class));
+    }
+    @Test
+    @DisplayName("Debe lanzar DetalleException 404 cuando el DetallePedido a actualizar no existe")
+    public void shouldThrowDetallePedidoExceptionWhenDetalleNotFoundForUpdate() {
+        // Arrange
+        Long idDetalleInexistente = 999L;
+        Integer cantidad = 10; // Datos para actualizar
+
+        // Mock: Simular que no existe el DetallePedido
+        when(detallePedidoRepository.findById(idDetalleInexistente))
+                .thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> detallePedidoService.update(idDetalleInexistente, new DetallePedidoUpdateDTO(cantidad)))
+                .isInstanceOf(DetallePedidoException.class)
+                .hasMessageContaining("El detalle Pedido con id"+idDetalleInexistente+"no existe");
+
+        // Verify
+        verify(detallePedidoRepository, times(1)).findById(eq(idDetalleInexistente));
+        verify(detallePedidoRepository, never()).save(any(DetallePedido.class));
+        verify(pedidoClientRest, never()).findById(anyLong());
+        verify(productClientRest, never()).findById(anyLong());
+        verify(sucursalClientRest, never()).findById(anyLong());
     }
 
     @Test
