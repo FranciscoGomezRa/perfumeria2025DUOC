@@ -14,8 +14,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/detallepedido")
 @Validated
-
+@Tag(name="DetallePedido", description = "OPERACIONES CRUD")
 public class DetallePedidoController {
 
 
@@ -41,7 +43,11 @@ public class DetallePedidoController {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = DetallePedido.class)
+                    )),
             @ApiResponse(
                     responseCode= "404",
                     description = "Detalle Pedido no Encontrado con el id suministrado",
@@ -63,7 +69,11 @@ public class DetallePedidoController {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = DetallePedido.class)
+                    ))
     })
     public ResponseEntity<List<DetallePedido>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(this.detallePedidoService.findAll());
@@ -119,11 +129,43 @@ public class DetallePedidoController {
 
 
     @PostMapping("/pedido")
+    @Operation(
+            summary="Obtiene una Lista de Detalle Pedidos",
+            description = "Obtiene todos los Detalle Pedido Asociados a ese ID"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = DetallePedido.class)
+                    )),
+            @ApiResponse(
+                    responseCode= "404",
+                    description = "Detalle Pedido no Encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)))
+    })
+    @Parameters( value={
+            @Parameter(name="id",description = "Este es el id Unico del Detalle Pedido", required = true)
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Recibe un ID PEDIDO",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = DetallePedido.class)
+            )
+    )
     public ResponseEntity<List<DetallePedido>> BuscadorPorIdPedido(@RequestBody@Valid idPedidoDTO idpedidodto) {
         return ResponseEntity.status(HttpStatus.OK).body(this.detallePedidoService.BuscadorPorIdPedido(idpedidodto));
     }
 
     @PatchMapping("/id")
+    @Operation(
+            summary="Actualiza un Detalle pedido",
+            description = "Necesita un body que contenga ID y un BODY con los datos a modificar"
+    )
     @ApiResponses(value= {
             @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
             @ApiResponse(
