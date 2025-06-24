@@ -1,5 +1,6 @@
 package com.gsf.msvc_pedido.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -31,6 +32,7 @@ public class Pedido {
     @Schema(description = "Entrega el codigo de Sucursal asociado a un Pedido ",example = "1")
     private Long idSucursal;
 
+    @JsonIgnore
     @Column(name="total_pedido")
     private Double totalPedido;
 

@@ -47,7 +47,11 @@ public class PedidoControllerV2 {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema= @Schema(implementation = Pedido.class)
+                    )),
             @ApiResponse(
                     responseCode= "404",
                     description = "Pedido no Encontrado con el id suministrado",
@@ -66,10 +70,57 @@ public class PedidoControllerV2 {
 
 
     @PostMapping("/boleta")
+    @Operation(
+            summary="Obtiene un Pedido desde un ID(Requiere DTO)",
+            description = "Calcula el total de Detalle Pedidos asociados a un Id Pedido"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema= @Schema(implementation = Pedido.class)
+                    )),
+            @ApiResponse(
+                    responseCode= "404",
+                    description = "Pedido no Encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)))
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Producto a Crear",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Pedido.class)
+            )
+    )
     public ResponseEntity<PedidoCompletoDTO> emisionTotalPedidos(@RequestBody@Valid idPedidoDTO idpedidodto) {
         return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.emisionTotalPedidos(idpedidodto));
     }
 
+    @GetMapping("/boleta/{id}")
+    @Operation(
+            summary="Obtiene una boleta desde un ID Pedido",
+            description = "Calcula el total de Detalle Pedidos asociados a un Id Pedido"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema= @Schema(implementation = Pedido.class)
+                    )),
+            @ApiResponse(
+                    responseCode= "404",
+                    description = "Pedido no Encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)))
+    })
+    public ResponseEntity<PedidoCompletoDTO> emisionPedidoCalculado(@PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pedidoService.emisionPedidoCalculado(id));
+    }
 
     @GetMapping
     @Operation(
@@ -78,7 +129,11 @@ public class PedidoControllerV2 {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema= @Schema(implementation = Pedido.class)
+                    ))
     })
     public ResponseEntity<CollectionModel<EntityModel<Pedido>>> findAll(){
         List<EntityModel<Pedido>> entityModels = this.pedidoService.findAll()
@@ -96,7 +151,10 @@ public class PedidoControllerV2 {
     @PostMapping
     @Operation(summary= "Guarda un Pedido",description = "Con este metodo podemos enviar un body(JSON) con los atributos del producto a ingresar")
     @ApiResponses(value={
-            @ApiResponse(responseCode = "201",description = "Guardo exitoso"),
+            @ApiResponse(responseCode = "201",description = "Guardo exitoso",content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Pedido.class)
+            )),
             @ApiResponse(
                     responseCode = "409",
                     description = "El Pedido guardado ya se encuentra en la base de datos",
@@ -126,7 +184,10 @@ public class PedidoControllerV2 {
     )
 
     @ApiResponses(value= {
-            @ApiResponse(responseCode = "200",description = "Operacion Exitosa"),
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa",content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Pedido.class)
+            )),
             @ApiResponse(
                     responseCode= "404",
                     description = "Pedido no Encontrado con el id suministrado",
@@ -140,6 +201,30 @@ public class PedidoControllerV2 {
         return ResponseEntity.status(HttpStatus.OK).body("Pedido Eliminado");
     }
     @PostMapping("/cliente")
+    @Operation(summary= "Busca los Pedidos asociados a un Cliente",description = "Requiere un DTO con un ID Cliente")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200",description = "Success!",content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Pedido.class)
+            )),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "El Cliente no existe",
+                    content = @Content(
+                            mediaType= "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+
+            )
+    })
+    //ESTE REQUEST BODY ES DE LA DOCUMENTACION, Relativo a la entrada que estoy esperando
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "busca un cliente",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema= @Schema(implementation = Pedido.class)
+            )
+    )
     public List<Pedido> findByClienteId(idClienteDTO idclientedto) {
         return this.pedidoService.findByClienteId(idclientedto);
         }

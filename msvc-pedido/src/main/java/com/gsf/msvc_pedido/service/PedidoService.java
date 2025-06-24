@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PedidoService {
     Pedido findById(long id);
+    PedidoCompletoDTO emisionPedidoCalculado(Long id);
     List<Pedido> findAll();
     List<Pedido> findByClienteId(idClienteDTO idclientedto);
     Pedido save(PedidoDTO pedidodto);

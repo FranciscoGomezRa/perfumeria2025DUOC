@@ -4,6 +4,7 @@ import com.gsf.msvc_pedido.clients.ClienteClientRest;
 import com.gsf.msvc_pedido.clients.DetallePedidoClientRest;
 import com.gsf.msvc_pedido.clients.InventarioClientRest;
 import com.gsf.msvc_pedido.clients.SucursalClientRest;
+import com.gsf.msvc_pedido.dtos.PedidoCompletoDTO;
 import com.gsf.msvc_pedido.dtos.PedidoDTO;
 import com.gsf.msvc_pedido.dtos.idPedidoDTO;
 import com.gsf.msvc_pedido.exception.PedidoException;
@@ -143,6 +144,27 @@ public class MsvcPedidoServiceTest {
         verify(sucursalClientRest).findById(1L);
         verify(pedidoRepository).save(any(Pedido.class));
     }
+    @Test
+    @DisplayName("Debe lanzar excepción cuando la Sucursal no existe al guardar pedido")
+    public void shouldThrowExceptionWhenSucursalNotFoundOnSave() {
+        Long idSucursalInexistente = 999L;
+        PedidoDTO dto = new PedidoDTO();
+        dto.setIdSucursal(idSucursalInexistente);
+        dto.setIdCliente(1L);
+
+        when(sucursalClientRest.findById(idSucursalInexistente))
+                .thenReturn(ResponseEntity.notFound().build());
+
+        // xD
+        assertThatThrownBy(() -> pedidoService.save(dto))
+                .isInstanceOf(PedidoException.class) // Ajusta según tu excepción
+                .hasMessageContaining("Sucursal con id "+idSucursalInexistente +" encontrada");
+
+        // Verifies
+        verify(sucursalClientRest, times(1)).findById(idSucursalInexistente);
+        verify(clienteClientRest, never()).findById(any());
+        verify(pedidoRepository, never()).save(any());
+    }
 
     @Test
     @DisplayName("Debe Actualizar un Pedido")
@@ -157,6 +179,25 @@ public class MsvcPedidoServiceTest {
         assertThat(result).isEqualTo(pedidoPrueba);
         verify(pedidoRepository, times(1)).save(any(Pedido.class));
     }
+    @Test
+    @DisplayName("Debe lanzar PedidoException al actualizar pedido inexistente")
+    public void shouldThrowPedidoExceptionWhenUpdatingNonExistentPedido() {
+        // Arrange
+        Long idPedidoInexistente = 999L;
+        PedidoDTO dto = new PedidoDTO();
+
+        when(pedidoRepository.findById(idPedidoInexistente))
+                .thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> pedidoService.update(idPedidoInexistente, dto))
+                .isInstanceOf(PedidoException.class)
+                .hasMessageContaining("El Pedido no existe en la base de datos");
+
+        // Verify
+        verify(pedidoRepository, times(1)).findById(idPedidoInexistente);
+        verify(pedidoRepository, never()).save(any());
+    }
 
     @Test
     @DisplayName("Debe Eliminar un Pedido existente")
@@ -165,5 +206,47 @@ public class MsvcPedidoServiceTest {
         doNothing().when(pedidoRepository).deleteById(1L);      // Configura el delete (void)
         pedidoService.deleteById(1L);
         verify(pedidoRepository, times(1)).deleteById(1L);
+    }
+    @Test
+    @DisplayName("Debe lanzar PedidoException cuando no encuentra el Pedido para emisión total")
+    public void shouldThrowPedidoExceptionWhenPedidoNotFoundForEmisionTotal() {
+        // Arrange
+        Long idPedidoInexistente = 999L;
+        idPedidoDTO dto = new idPedidoDTO(idPedidoInexistente);
+
+        when(pedidoRepository.findById(idPedidoInexistente))
+                .thenReturn(Optional.empty());
+
+        // asddas
+        assertThatThrownBy(() -> pedidoService.emisionTotalPedidos(dto))
+                .isInstanceOf(PedidoException.class)
+                .hasMessageContaining("El Pedido no existe en la base de datos");
+
+        // Verify
+        verify(pedidoRepository, times(1)).findById(idPedidoInexistente);
+        verify(clienteClientRest, never()).findById(any());
+        verify(detallePedidoClientRest, never()).BuscadorPorIdPedido(any());
+    }
+    @Test
+    @DisplayName("Debe manejar lista vacía de detalles en emisionPedidoCalculado")
+    public void shouldHandleEmptyDetalleListInEmisionPedidoCalculado() {
+        // Arrange
+        Long idPedidoExistente = 1L;
+        Pedido pedidoMock = new Pedido();
+        pedidoMock.setIdCliente(1L);
+
+        when(pedidoRepository.findById(idPedidoExistente))
+                .thenReturn(Optional.of(pedidoMock));
+        when(clienteClientRest.findById(anyLong()))
+                .thenReturn(ResponseEntity.ok(new Cliente()));
+        when(detallePedidoClientRest.BuscadorPorIdPedido(any()))
+                .thenReturn(ResponseEntity.ok(Collections.emptyList()));
+
+        // Act
+        PedidoCompletoDTO result = pedidoService.emisionPedidoCalculado(idPedidoExistente);
+
+        // Assert
+        assertThat(result.getListaDetallePedidos()).isEmpty();
+        assertThat(result.getTotalPedido()).isEqualTo(0.0);
     }
 }

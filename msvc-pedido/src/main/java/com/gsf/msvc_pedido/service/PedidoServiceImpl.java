@@ -73,6 +73,30 @@ public class PedidoServiceImpl implements PedidoService {
 
     }
 
+    @Override
+    public PedidoCompletoDTO emisionPedidoCalculado(Long id){
+
+        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+                () -> new PedidoException("El Pedido no existe en la base de datos")
+        );
+
+        PedidoCompletoDTO pedidocompleto = new PedidoCompletoDTO();
+        Cliente cliente = this.clienteClientRest.findById(pedido.getIdCliente()).getBody();
+
+
+        List<DetallePedido> listaDetallePedidos = this.detallePedidoClientRest.BuscadorPorIdPedido(new idPedidoDTO(id)).getBody();
+        Double totalPedido = listaDetallePedidos.stream()
+                .mapToDouble(DetallePedido::getTotal) // Convierte a DoubleStream
+                .sum();
+
+        pedidocompleto.setIdPedido(id);
+        pedidocompleto.setNombreCliente(cliente.getNombreCliente());
+
+        pedidocompleto.setListaDetallePedidos(listaDetallePedidos);
+        pedidocompleto.setTotalPedido(totalPedido);
+
+        return pedidocompleto;
+    }
 
     @Override
     public List<Pedido> findAll() {
@@ -89,7 +113,13 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Pedido save(PedidoDTO pedidodto) {
         Sucursal sucursal = this.sucursalClientRest.findById(pedidodto.getIdSucursal()).getBody();
+        if(sucursal==null){
+            throw new PedidoException("Sucursal con id "+pedidodto.getIdSucursal() +" encontrada");
+        }
         Cliente cliente = this.clienteClientRest.findById(pedidodto.getIdCliente()).getBody();
+        if(cliente==null){
+            throw new PedidoException("El Cliente no existe en la base de datos");
+        }
 
         Pedido pedido = new Pedido();
         pedido.setIdSucursal(sucursal.getIdSucursal());
