@@ -36,6 +36,7 @@ public class SucursalServiceTest {
     private SucursalServiceImpl sucursalService;
 
     private Sucursal sucursalPrueba;
+    private Sucursal sucursalPruebaCamposIncompletos = new Sucursal();
 
     private List<Sucursal> sucursales = new ArrayList<>();
 
@@ -86,6 +87,8 @@ public class SucursalServiceTest {
         verify(sucursalRepository, times(1)).findById(Long.valueOf(1L));
 
     }
+
+
 
     @Test
     @DisplayName("Debe buscar un sucursal un Id que no existe")

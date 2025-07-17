@@ -40,6 +40,8 @@ public class InventoryServiceTest {
     private InventoryServiceImpl inventoryService;
 
     private Inventario inventarioPrueba;
+    private Producto productoPrueba;
+    private Sucursal sucursalPrueba;
 
 
     private List<Inventario> inventarios = new ArrayList<>();
@@ -48,6 +50,8 @@ public class InventoryServiceTest {
 
     @BeforeEach
     public void setUp(){
+        this.productoPrueba = new Producto(1L,"Delicioso","Chocman",1F);
+        this.sucursalPrueba = new Sucursal(1L,"La mejor sucursal","xD");
         this.inventarioPrueba = new Inventario(
                 5, 1L,1L
         );
@@ -157,6 +161,57 @@ public class InventoryServiceTest {
         verify(sucursalClientRest, times(1)).findById(Long.valueOf(1L));
         verify(inventoryRepository, times(1)).save(any(Inventario.class));
     }
+
+    @Test
+    @DisplayName("Debe lanzar excepcion cuando no encuentra el producto asociado")
+    public void shouldThrowExceptionWhenProductNotFound(){
+        Long idInexistente = 999L;
+        Inventario inventario = new Inventario();
+        inventario.setIdProducto(idInexistente);
+        inventario.setIdSucursal(1L);
+        inventario.setCantidadInventario(1);
+
+        when(productClientRest.findById(idInexistente))
+                .thenReturn(ResponseEntity.notFound().build());
+
+        when(sucursalClientRest.findById(anyLong()))
+                .thenReturn(ResponseEntity.ok(sucursalPrueba));
+
+        assertThatThrownBy(()->inventoryService.save(inventario))
+                .isInstanceOf(InventoryException.class)
+                .hasMessageContaining("El producto no existe en la sucursal");
+
+        verify(productClientRest, times(1)).findById(idInexistente);
+        verify(sucursalClientRest, times(1)).findById(1L);
+        verify(inventoryRepository, never()).save(any(Inventario.class));
+    }
+
+    @Test
+    @DisplayName("Debe lanzar excepcion cuando no encuentra la Sucursal asociada")
+    public void shouldThrowExceptionWhenSucursalNotFound(){
+        Long idInexistente = 999L;
+        Inventario inventario = new Inventario();
+        inventario.setIdProducto(1L);
+        inventario.setIdSucursal(idInexistente);
+        inventario.setCantidadInventario(1);
+
+        when(productClientRest.findById(anyLong()))
+                .thenReturn(ResponseEntity.ok(productoPrueba));
+        when(sucursalClientRest.findById(idInexistente))
+                .thenReturn(ResponseEntity.notFound().build());
+
+
+        assertThatThrownBy(()->inventoryService.save(inventario))
+                .isInstanceOf(InventoryException.class)
+                .hasMessageContaining("La sucursal no existe");
+
+        verify(productClientRest, times(1)).findById(1L);
+        verify(sucursalClientRest, times(1)).findById(idInexistente);
+        verify(inventoryRepository, never()).save(any(Inventario.class));
+    }
+
+
+
 
     @Test
     @DisplayName("Debe Actualizar un Inventario")

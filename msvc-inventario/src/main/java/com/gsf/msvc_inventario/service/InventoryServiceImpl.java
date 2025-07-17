@@ -45,10 +45,15 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Inventario save(Inventario inventario) {
         try{
+
             Producto producto = this.productClientRest.findById(inventario.getIdProducto()).getBody();
             Sucursal sucursal = this.sucursalClientRest.findById(inventario.getIdSucursal()).getBody();
             if(this.inventoryRepository.existsById(inventario.getIdProducto())){
                 throw new InventoryException("El producto ya existe en la sucursal");
+            }else if (producto==null){
+                throw new InventoryException("El producto no existe en la sucursal");
+            }else if (sucursal==null){
+                throw new InventoryException("La sucursal no existe");
             }
             return this.inventoryRepository.save(inventario);
         }catch(FeignException ex){

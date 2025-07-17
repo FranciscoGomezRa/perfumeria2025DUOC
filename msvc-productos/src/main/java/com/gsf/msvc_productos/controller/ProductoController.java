@@ -103,6 +103,14 @@ public class ProductoController {
     //MANTENER APRETADO ALT GR PARA CHECKEAR CODIGOS HTML
 
     @DeleteMapping("/{id}")
+    @Operation(
+            summary="Borra un Producto",
+            description = "Borra un Producto segun el ID"
+    )
+
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200",description = "Operacion Exitosa")
+    })
     public ResponseEntity<String> deleteById(@PathVariable Long id){
         productService.deleteById(id);
 

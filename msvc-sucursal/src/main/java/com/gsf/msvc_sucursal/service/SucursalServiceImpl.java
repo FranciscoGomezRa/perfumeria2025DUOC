@@ -35,6 +35,7 @@ public class SucursalServiceImpl implements SucursalService {
 
     @Override
         public Sucursal save(Sucursal sucursal) {
+
             if (this.sucursalRepository.findByNombreSucursal(sucursal.getNombreSucursal()).isPresent()) {
                 throw new SucursalException("La sucursal con el nombre: " + sucursal.getNombreSucursal() + " ya existe en la base de datos");
             }
